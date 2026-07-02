@@ -1,0 +1,376 @@
+  ## Day01 : -----------------Ansiblr Task (Install Nginx on Pathnex server)--------------
+
+
+---
+ -name: Install Nginx on Pathnex server
+   hosts : all
+   become : yes
+
+   tasks:  
+      -name: Install nginx
+      yum:
+        name: nginx
+        state : present
+
+
+
+---
+   - name : Install Nginx on Pathnex Server 
+      hosts: all
+      become : yes
+       
+       tasks:
+          - name: Install nginx
+	  yum:
+	     name: nginx
+	     state : present
+
+
+---
+    -name : Install Nginx on Pathnex server
+     hosts : all
+      become : yes
+       
+
+       tasks : Install nginx
+        yum: 
+	   name : nginx
+	   state : present
+
+
+--- 
+ - name : Install Nginx on Pathnex server
+   hosts : all
+     
+     tasks : 
+      - name : Install Nginx
+      yum :
+      name : nginx
+      state : present
+
+
+--- 
+   - name : Install Nginx on Pathnex server
+      hosts : all
+      become : yes
+
+       tasks : 
+         - name : Install nginx
+	 yum :
+	    name: nginx
+	    state : present
+
+
+--- 
+  - name : Install Nginx on pathnex server
+   hosts : all
+   become : yes
+
+
+   tasks:
+    -name : Install nginx
+     yum : 
+       name :  nginx
+       state: present
+
+
+
+
+  ##  -----------Tarrafrom Task : Create EC2 (c2.xlarge)-------------
+
+  provider "aws" {
+       region = "india-e-8980"
+  } 
+
+  resource "aws-instance" "PathnexEc2" {
+
+   ami = "ami-80989kjhj789789hkghjfrtdcgh"
+   instance_type = "c5.xlarge"
+
+   tags = {
+     Name = "Pathnex-EC2"
+
+   }
+
+
+  }
+
+
+provide "aws" {
+  region = "us-west-09"
+  }
+
+resource "aws-instance" "PathnexEC2"{
+   ami = "ami-7987hkjhkjgbjb"
+   instance_type = "c5.xlarge"
+
+   tags = {
+      Name : "Pathnex-EC2"
+   }
+
+}
+
+
+
+provider "aws" {
+  region = "india-09"
+  }
+
+resources "aws_Instance" "PathnexEC2"{
+
+    ami = "ami-989079jkhgjghj"
+    instance_type = "c5.xlarge"
+
+    tags = { 
+    Name : "Pathnex-EC2"
+    }
+  }
+
+provider "aws" {
+  region = "north-east-indis-09"
+  }
+
+
+
+  resource "aws_instance" "PathnexEC2" {
+    ami = "ami-898hkjhkuh"
+    instance_type = "c5.xlarge"
+
+    tags = {
+    Name = "Pathnex-EC2"
+    }
+
+    }
+
+
+
+
+  ## -----------Kubernetes Task (Create Nginx Pod)--------------
+
+  apiVersion : v1
+  kind : pod
+  metadata:
+     name: Pathnex-pod
+
+     spec :
+      containers :
+        -name : web
+	image : nginx:latest
+	ports : 
+	  -containerPort : 80
+
+
+
+  apiVersion : v1
+  kind :pod
+  metadata:
+     name : Pathnex-pod
+  spec : 
+     containers :
+       - name :  web 
+       image : nginx:latest
+       ports :
+         -container :  80
+
+
+  apiVersion : v1
+  king : pod
+  metadata:
+     - name : pathnex-pod
+  spec :
+     containers :
+        - name : web 
+	 image : nginx:latest
+	 ports :
+	    - containerPort :80
+
+
+
+  apiVersion : v1
+  kind : pod
+    metadata : 
+      - name : Pathnex-pod
+    spec :
+       containers :
+        - name : web
+	image : nginx: latest
+	ports :
+	   - containerPort : 80
+
+
+
+
+   apiVersion : v1
+   kind : pod
+   metadata:
+      - name : Pathnex-pod
+   spec : 
+      containers : 
+        -name : web
+	image : nginx :latest
+	ports :
+	 -  containerPort : 80
+
+
+
+
+    ## ---------Shell Script - Print Date & Host Name-------------
+
+    
+  #!/bin/bash
+  echo "Date : $(date)"
+  echo "Hostname : $(hostname)"
+
+
+  #!bin/bash
+  echo  "Date : $(date)"
+  echo "hostname : $(hostname)"
+
+
+  #!bin/bash
+  echo "Date : $(date)"
+  echo "Hostname : $(hostname)"
+
+
+  #!/bin/bash
+  echo "Date : $(date)"
+  echo "Hostname : $(hostname)"
+
+
+   #!/bin/bash
+   echo "Date : $(date)"
+   echo "Hostname : $(hostname)"
+
+
+
+
+
+   # ---------Git Integration 
+   ## Jenkins Pipeline - Checkout Git
+
+
+   pipeline {
+      agent any
+      stages{
+         stage('Checkout'){
+	   steps {
+	   git branch : 'main' ,  url: "https://gjgiuggiug"
+          }
+	 }
+	 stage ('List Files'){
+          steps{
+                sh 'ls -la'
+	  } 
+	 }
+}
+}
+
+    pipeline {
+       agent any 
+          stages{
+	      stage('Checkout'){
+	         steps {
+		   git branch : 'main', url : 'jhjhkjhkh'
+		   }
+                  }
+               stage('List Files'){
+	         steps{
+		 sh 'ls -la'
+		 } }
+		 }}
+   pipeline {
+      agent any 
+        stages { 
+	  stage('Checkout'){
+	       steps {
+	          git branch : 'main' , url : 'ghgjg..."
+		  } }
+           stage ("List Files) {
+	     steps {
+	       sh 'ls -la'
+	       } } } }
+
+
+
+
+
+
+  ## ------------------ GitLab CI - Checkput git----------------
+
+     stages : Checkout
+
+     git-checkout :
+       stage : checkout
+       script :
+       - git clone "url"
+       - cd sample.java
+       - ls -la
+
+      stages : Checkout
+
+      git-checkout :
+        stage : checkout
+	script :
+	git clone 
+	cd appname
+	ls -la
+
+
+
+	stages : Checkout
+
+
+	git-checkout :
+	 stage :checkout
+	 script :
+	  git clone 
+	  cd projectname
+	  - ls -la
+
+
+
+	  stages : Checkout
+
+
+	  gir-checkout :
+	   stage : checkout
+	   script : 
+	    git clone :
+	    cd project name
+	    ls -la
+
+
+
+	    stage : checkout
+
+	    git-checkout :
+	     stage : checkout
+	     script : 
+	     - git clone "url"
+	     - cd projectname
+	     - ls -la
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
