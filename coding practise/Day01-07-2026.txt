@@ -351,6 +351,12 @@ provider "aws" {
 	     - ls -la
 
 
+        stage : checkout
+	git-checkout :
+	script :
+	- git clone "url"
+	- cd Projectname.java
+	- sl -la
 
 
 
