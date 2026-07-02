@@ -1,0 +1,14 @@
+# ----------Day 01 ------------
+
+1 Hours+ Code Practise
+1 hour try To create EC2 instance and Explored other AWS Services (Only try to see what is dashboard and which types of services)
+
+
+
+#-----------Tomorrow Task ---------
+1. Learn Linux Commands
+2. one hour English Practise 
+3. Explore mimimum 4 AWS Service in details
+
+
+
