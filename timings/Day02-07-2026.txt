@@ -1,0 +1,9 @@
+     ##--------------Day 02---------------
+
+     1. one hour coding practise done
+     2. Learn some Basics linux Command 
+
+
+     ##-----tomorrow task-------------
+     1. Learn new linux command 
+     2. some AWS Services 

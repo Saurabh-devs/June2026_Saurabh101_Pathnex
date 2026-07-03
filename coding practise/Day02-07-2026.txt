@@ -1,0 +1,498 @@
+# ------------Day-02-- Services and Tags 
+
+
+## --------Ansible - Install & enable Nginx-----------------
+
+--- 
+ -name : Install and start  Nginx on Pathn es server
+  hosts :all
+  become : yes
+    
+    tasks :
+     -name : Install nginx
+       yum : 
+         name : nginx
+	 state : present
+
+
+     -name : Enable nginx
+      service : 
+          name : nginx
+	  state : started
+	  enabled :yes
+
+
+
+
+   ---
+     -name : Install and start Nginx on Xyz Server
+     hosts : all
+     become : yes
+
+     tasks :
+       -name : Install nginx
+         yum:
+	   name : nginx
+	   state : present
+
+	-name : Enable nginx
+	  service :
+	    name: nginx
+	    state : started
+	    enabled :yes
+
+
+
+
+   ---
+     - name : Insatall and Start Nginx on Pathnex server
+       hosts : all
+       become : yes
+
+       tasks :
+         -name : Install nginx
+	  yum : 
+	    name : nginx
+	    state : present
+
+
+	   -name : Enable nginx
+	    service : 
+	      name : nginx
+	      state : started
+	      enable : yes
+
+
+
+  --- 
+    - name : Install and Start  Nginx on Pathnex server on 
+
+     tasks : 
+       -name : Install Nginx
+         yum : 
+	   name : nginx
+	   state : present
+
+
+	 - name : Enable nginx
+	    service :
+	       name : nginx
+	       state : started
+	       enable :  yes
+
+  --- 
+    - name : Insatll and start Nginx on Pathnex server 
+      
+      tasks : 
+      - name : Install Nginx
+        yum : 
+	  name : nginx
+	  state : present
+
+
+	- name : Enable nginx
+          service : 
+	    name : nginx
+	    state : started
+	    enable : yes
+
+
+
+ ## ---------- Terraform ---------------
+
+ provide "aws"{
+  region = " us-8989"
+  }
+
+  resource "aws-instance" "PathnexEC2" {
+  ami =  "ami -8098hhk"
+  insatnce_type = "r5.@xlarge"
+
+  tags = {
+     Name = "Pathnex-Server"
+     Environment = "Training"
+     Owner  = "Pathnextstudent"
+     }
+     }
+
+
+
+
+     provider "aws" {
+       region = " India-8908h"
+     }
+
+     recource "aws_instance" "PathnexEC2" {
+       ami = "ami-ghjgkyuy7897"
+       instance_type = "r5.xlarge"
+
+       tags = {
+          Name = "Pathnex-Server"
+	  Environment = "Training"
+	  Owner = "I am only "
+	  }
+	  }
+
+
+
+	  proivder "aws"{
+	  region = "North-india" }
+   
+         resource "aws_instance" "PatyhnexEC2" {
+	    ami = "ami -808uihi"
+	    instance_type = "r5.2xlarge"
+
+	    tags = {
+	       Name : "Pathnex-Server"
+	       Environment = "Training"
+	       Owner = "Student"
+
+	       }
+
+	       }
+
+
+## -----------------Kubernets-------------------
+ 
+    apiVersion = apps/v1 
+     kind :Deployment
+     metadata :
+      name : Pathnex-deployment
+
+      spec :
+       replicas : 2
+
+       selector : 
+         matchLabels : 
+	   app : pathnex-app
+
+        templete : 
+	  metadata : 
+	    labels :
+	      app : Pathnex-app
+
+	 spec :
+	    - name : app
+	    image : nginx
+	      ports :
+	       -containerPort : 80
+
+
+
+
+
+
+	apiVersion : apps/v1
+	kind : Deployment
+	metadata :
+	   app : pathnex-deployment
+
+
+	 spec: 
+	   replicas : 2
+	   selector : 
+	     matchLabels :
+	       app : pathnex-app
+
+
+	  template : 
+	    metadata :
+	      labels :
+	         app : pathnex-app
+             spec:
+	      containers :
+	        - name : app
+		  image : nginx
+		  ports : 
+		      - containerPorts : 80
+
+
+
+
+
+        apiVersion = apps/v1
+	 kind : Depolyment 
+         metadata :
+	   name : pathnex-deployment
+         
+	 spec :
+	   replicas : 2 
+	   selector : 
+	    matchLables :
+	       app : pathnex-app
+
+	      template :
+	        metadata : 
+		  labels :
+		    app : pathnex-app
+
+		 spec :
+		   containers :
+		      -name : app
+		      image : nginx
+		      ports : 
+		        -containersPort : 80
+
+
+
+
+          apiVersion : apps/v1
+	   kind :Deployment
+           metadata : 
+	      name : pathnex-deployment
+            spec:
+	       replicas : 2
+	        selector : 
+		  matchLabels: 
+		    app : pathnex-app
+		template :
+		  metadata:
+		   labels : 
+		      app : pathnex-app
+		  spec:
+		    containers :
+		      - anme : app
+		       image : nginx
+		        ports :
+			  -containerPort : 80
+
+
+
+          apiVersion : apps/v1
+	    kind : Deployment 
+	    metadata : 
+	      name : pathnex-deployment 
+	      spec: 
+	        replicas : 7
+		 selector : 
+		   matchLabels :
+		     app : pathnex-app
+
+		     template :
+		       metadata :
+		         labels : 
+			  app : pathnex-app
+
+			  spec :
+			   containers : 
+			    -name : app
+			    image : nginx
+			      ports :
+			         -containerPort : 80
+
+
+
+
+  ## -------------------- Shell Script- disk Usage -------------------------------------
+
+   #!/bin/bash
+   df -h
+
+   #!/bin/bash
+   df -h
+
+   #!bin/bash
+   df -h
+
+   #!/bin/bash
+   df -h
+
+   #!/bin/bash
+   df -h
+
+   ##---------------------------Maven Build----------------------
+   ##----------Jenkins Pipeline------------------
+
+   pipeline {
+     agent any {
+       tools {
+         maven 'Maven-3.9.07'
+	 jdk 'JDK-21'
+	 }
+	 stages{
+	    stage('Checkout'){
+	      steps {
+	         git url : "hjghjgg"
+		 }
+
+		 stage('Compile'){
+		 steps {
+		   sh 'mvn clean compile'
+		   } 
+
+		   stage('Test){
+		     steps {
+		       sh 'mvn test'
+		       }
+
+		   stage ('Package'){
+		      steps {
+		         sh 'mvn package'
+			 }
+			 }}}
+
+
+
+    pipeline {
+      agent any 
+         tools {
+	   maven 'mvn-78789hjhj.0'
+           jdk 'JDK-21'
+	   }
+	   stages {
+	      stage('Checkout'){
+	         steps {
+		   git url : ""
+		   }
+
+		   stage('Compile'){
+		      steps {
+		       sh 'mvn clean compile'
+		       }
+
+		       stage ('Test){
+		         steps {
+			   sh 'mvn test'
+			   }
+
+			   stage('Package'){
+			     steps {
+			       sh 'mvn package'
+			       }}}}
+
+   
+     pipeline {
+        agent any 
+	  tools {
+	   maven 'maven-9898098'
+	   jdk 'JDK-90'
+	   }
+
+	   stages {
+	     stage('Checkout'){
+	       step {
+	         git ur l = ""
+		 } }
+
+		 stage('Compile'){
+		 steps {
+		    sh 'mvn clean compile'
+		    } }
+
+		    stage('Test'){
+		      steps {
+		        sh 'mvn test'
+			}
+			}
+                     stage('Package') {
+		        steps {
+			  sh 'mvn package'
+			  }}}}
+
+
+
+  ## ------------- Gitlab CI -Maven Build--------------------
+
+   stages :
+    - build ;
+    - test :
+    - package :
+
+
+    maven-build:
+      stage : build 
+        image : maven: 8.9.0-jdk-17
+	script :
+	- git clone "url"
+	- cd java-app
+	- mvn clean compile
+
+   maven-test :
+     stage : test
+     image : maven:8.9.0-jdk-21
+     script : 
+       -cd java-app
+       - mvn test
+
+
+    maven-package:
+      stage : package
+      image : maven:4.5.6-jdk-12
+      script :
+        -cd java-app
+	-mvn package
+
+
+
+
+   stages: 
+   - build
+   - test 
+   - package
+
+
+      maven-build :
+        stage : build 
+	image : maven:8.9.0-jdk-21
+	script :
+	 - git clone url
+	 - cd java-app
+	 - mvn clean compile
+
+     maven-test:
+       stage : test
+       image : maven:7.8.9-jdk-21
+       script : 
+         - cd java-app
+	 - mvn test
+
+
+    maven-package:
+      stage:package
+      image: maven:9.8.0-jdk-12
+      script:
+        - cd java-app
+	- mvn package
+
+
+    
+    stages:
+     - build 
+     - test
+     - package
+
+
+     maven-build :
+        stage : build
+	image : maven:9.8.07-jdk-98
+	script:
+	 - git clone url
+	 - cd java-app
+	 - mvn clean compile
+
+
+     maven-test:
+       stage : test
+       image : maven:8.7.34-jdk-34
+       script:
+        - cd java-app
+	- mvn test
+
+	maven-package:
+	  stage:package
+	  image : maven:8.9.0-jdk-42
+	  script :
+	  - cd sample-java-app
+	  - mvn package
+
+
+
+
+
+
+
+   
+
+
+
+
