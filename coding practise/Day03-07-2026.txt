@@ -1,0 +1,732 @@
+## - ------------------Day 03 (Practise L1)--------------------
+
+  ## Ansible - Create User-----------------
+
+  ---
+   - name : Create Pathnex user
+     hosts :  all
+     become : yes
+
+     tasks : 
+       - name : Create user pathnex-admin
+        user:
+	 name : pathnex-admin
+	 shell : /bin/bash
+
+
+
+ --- 
+    - name : Create Pathnsx user
+      hosts : all
+      become : yes
+       
+       tasks :
+          - name : Create user pathnex-user
+	    user : 
+	     name : pathnex-admin
+	     shell : /bin/bash
+
+
+ ---
+    - name : Create Pathnex user
+     hosts: all 
+     become : yes
+       
+       tasks :
+        - name : Create user pathnex-user
+	  user: 
+	    name : pathnex-user
+	    shell : /bin/bash
+
+
+
+ --- 
+    - name : Create Pathnex user
+     hosts : all
+     become : yes
+   
+      tasks :
+         - name : Create user pathnex-user
+	   user : 
+	    name : pathnex-user
+	    shell : /bin/bash
+
+
+--- 
+  -name : Create Pathenx user
+   hosts : all
+   become : yes
+
+    tasks : 
+       - name : Create user pathnex-user
+          user:
+	     name : pathnex-user
+	     shell : /bin/bash
+
+
+--- 
+   -name : Create Pathnex user
+    hosts: all
+    become : yes
+
+    tasks :
+      - name : Create user pathnex-user
+        user :
+	 name : pathnex-user
+	 shell : /bin/bash
+
+
+
+
+##----------Terraform - security Group (r6i.4xlarge EC2)------------------------------
+
+  provider "aws" {
+     region = "us-west-1"
+     }
+
+     resource "aws_security_group" "Pathnex5G"{
+        name = "Pathnex5G"
+	description = "Pathnex 5g for SSh"
+
+	ingress {
+	from_port = 22
+	to_port = 22
+	protocol = "tcp"
+	cidr_blocks = ["0.0.0.0/0"]
+	}
+	}
+
+     resource "aws_instance" "PathnexEC2" {
+       ami = "ami-7979hjkjh"
+       instance_type = "r6i.4xlarge"
+       vpc_security_group_ids = [aws_security_group.Pathnex5G.id]
+
+       tags = {
+         Name = "Pathnex-EC2"
+	 }
+	 }
+
+
+ 
+    provider "aws" {
+      region = "us-west-1"
+       }
+
+       resource "aws_security_group" "Pathnex5g" {
+           name = "Pathnex5G"
+	   description = "Pathynex 5G for SSh"
+
+           ingress {
+	      from_port = 22
+	      to_port =22
+	      protocol = "tcp"
+	      cidr_blocks = ["0.0.0.0/0"]
+	      }
+	   }
+
+        resource "aws_instance" "PathnexEC2" {
+	   ami = "ami-8989hjghg"
+	   instance_type = "r6i.4xlarge"
+	   vpc_security_group_ids = [aws_security_group.Pathnex5G.id]
+
+	   tags = {
+	     Name : "Pathnex-EC2"
+
+	     }
+	     }
+
+
+   provider "aws" {
+     region = "india-109"
+     }
+
+   resource "aws_security_group" "Pathnex5G" {
+      name = "Pathnex5G"
+      description = "Pathnex %g for SSH"
+      
+      ingress {
+       from_port = 22
+       to_port = 22
+       protocol = "tcp"
+       cidr_blocks = ["0.0.0.0/0"]
+       }
+       }
+
+   resource "aws_instance" "PathnexEC2" {
+     ami = "ami-908uhnj"
+     instance_type = "r6i.4xlarge"
+     vpc_security_group_ids = ["aws_security_group.Pathnex5G.id]
+
+      tags = {
+        Name = "Pathnex-EC2"
+	}
+     } 
+
+
+
+     provider "aws" {
+        region = "us-909"
+	}
+
+     resource "aws_security_group" "Pathnex%G" {
+        name = "Pathynex5G"
+	description = Pathnex 5G for SSH"
+
+	ingress {
+	  from_port = 22
+	  to_port =22
+	  protocol = "tcp"
+	  cidr_blocks = [0.0.0.0./0"]
+	  }
+	  }
+
+	  resource "aws_instance" "PathnexEC2" {
+	    ami = "ami-88098"
+	    insatance_type = "r6i.4xlarge"
+	    vpc_security_group_ids = [aws_security_group.Pathnex5G.is]
+
+
+	    tags {
+	      name = "Pathnex_EC2"
+
+	      }
+	      }
+
+
+   provider "aws" {
+     region = "india-"
+     }
+
+     resource "aws_security_group"  "Pathnex5G" {
+        name = "Pathnex%"
+	description = "Pathnex5G for SSH"
+
+	ingress {
+	  from_port = 22
+	   to_port =22
+	   protocol = "tcp"
+	   cidr_blocks = ["0.0.0.0/0"]
+	   }
+	   }
+
+    resource "aws_instance" "PathnexEC2" {
+        ami = "ami -78hb8 "
+	instance_type  = "r6i.4xlarge"
+	vpc_security_group_ids = [aws_security_group.Pathnex5G.id]
+
+	tags = {
+	   Name = "Pathnex-EC2"
+
+	   }
+	   }
+
+
+
+
+
+
+
+
+  ##           ---------------------Kubernetes - Add Environment variable------------------------	   
+           apiVersion : v1
+	   kind : pod 
+	   metadata :
+	     name : pathnex-env-pod
+	   spec :
+	    containers :
+	       - name :app
+	         image : nginx
+		 env :
+		    - name : App_ENV
+		      value : "production"
+
+          
+	  apiVersion = v1
+	  kind : pod
+	  metadata:
+	    name : pathnex-env-pod
+	  spec :
+	   containers :
+	     - name : app
+	      image : nginx
+	      env:
+	       - name : App_ENV
+	        value : "production"
+
+
+
+	  apiVersion = v1
+	  kind : pod
+	  metadata:
+	   name : pathnex-env-pod
+	  spec:
+	    containers:
+	      - name : app
+	      image : nginx
+	    env:
+	      - name : APP_ENV
+	       value : "production"
+
+
+
+	    apiVersion = v1
+	    kind :pod
+	    metadata :
+	      name : pathnex-env-pod
+	    spec:
+	      containers:
+	        - name : app
+		  image : nginx
+		  env :
+		    - name : APP_ENV
+		     value : "production"
+
+            apiVersion = v1 
+	    kind : pod
+	    metadata:
+	       name : pathnex-env-pod
+	    spec: 
+	        containers :
+		  - name : app
+		    image : nginx
+		    env:
+		      - name : APP_ENV
+		      value : "production"
+
+
+
+
+  ## --------Shell Script-- Check file Exist ----------
+   
+   #!/bin/bash
+   FILE ="/tmp/pathnex.txt"
+
+   if[ -f "$FILE" ] ; then
+   echo "File exists"
+   else 
+     echo "File does not exist"
+   fi
+
+
+
+   #!/bin/bash
+   FILE= "tmp/myfile.txt"
+
+   if [ -f "$FILE" ]; then
+    echo "File Exist"
+   else 
+     echo "file does not exist"
+   fi
+
+   #!/bin/bash
+   MYFILE = "saurabh/myfile.txt"
+
+   if [ -f "$MYFILE) ]; then
+     echo " File Exists"
+   else 
+     echo " File does not exists"
+    fi
+
+
+    #!/bin/bash
+    NEWFILE = "myfolder/file.txt"
+
+    if[ -f "$NEWFILE" ]; then
+      echo "File Exists"
+
+     else 
+       echo "File does not exist"
+     fi
+
+
+
+
+   ##--------------------- Nodejs Build----------------------------
+   ##---------Jenkins Pipeline---------
+
+   pipeline {
+     agent any {
+        tools {
+	  nodejs 'NodeJS-16'
+	  }
+
+	  stages{
+	     stage('Checkout') {
+	       steps {
+	         git url : "hjhkjhk"
+		 }
+		 }
+	       stage ('Install Dependencies') {
+	        steps {
+		  sh 'npm install'
+		  }
+		  }
+                stage ('Run Tests') {
+		steps {
+		  sh 'npm test'
+		  }
+		  }
+		  stage('Build'){
+		    steps{
+		     sh 'npm run build'
+		     }
+		     }
+		     }}
+
+     pipeline {
+        agent any 
+	  tools {
+	     nodejs 'NodeJS-17'
+	     } 
+          stages {
+	     stage('Checkout'){
+	       git url: "hjhj"
+	       }
+	       }
+	       stage('Install Dependencies'){
+	        steps{
+		  sh 'npm install'
+		  }
+		  }
+                stage('Run Tests'){
+		  steps{
+		   sh 'npm test'
+		   }
+		   }
+		   stage('Build') {
+		    steps {
+		      sh 'npm run build'
+		      }}}}
+
+
+     pipeline{ 
+       agent any 
+         tools{
+	   nodejs 'NodeJS-16'
+	   }
+
+	   stages {
+	     stage('Checkout') {
+	      steps {
+	         git url : ""
+		 } 
+		 }
+	    stage('Install Dependencies'){
+	      steps{
+	        sh 'npm install'
+		}
+		}
+	   stage('Run Tests'){
+	     steps{
+	       sh "npm Test'
+	       }
+	       }
+	       stage('Build'){
+	         steps{
+		  sh 'npm run build'
+		  }
+		  }
+		  }
+		  }
+   
+   ## ---------gitlab CI---------------------
+
+   stages:
+    - install 
+    - test
+    - build
+
+    node-install:
+      stage : install
+      image : node:17
+      script:
+        - git clone url
+	- cd nodejsapp
+	- npm install
+
+   node-test:
+       stage: test
+       image :  node:16
+       script:
+        - cd nodejsapp
+	- npm test
+
+   node-build:
+      stage:build
+      image:node:16
+      script:
+       - cd sample-node-app
+       - npm run build
+
+
+
+    stages:
+     - install
+     - test
+     - run
+
+     npm-install:
+      stage : install
+      image : node:16
+      script :
+        -git clone url
+	- cd node-js-app
+	- npm install
+
+    node-test:
+      stage: test
+      image:node:16
+      script:
+        - cd node-js-app
+	- npm test
+
+   node-build:
+    stage:build 
+    image: node:16
+    script:
+      - cd noe-js-app
+      - npm run build
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+##-------------------------------------------------------------------
+##------------------Level-02(Day-03)-----------------------------------------
+
+
+#---------------Ansible-Install Apache and Start Service-------------------
+
+ -name : Install Apache and Start Service
+  hosts:all
+  become :present
+  tasks:
+    -name : Install apache
+      yum:
+        name : httpd
+	state: present
+
+      -name : Start apache
+        service: 
+	name:httpd
+	state:started
+	enabled: yes 
+
+
+  -name : Install Apache and start Service
+   hosts :all
+   become :yes
+   tasks :
+     -name : Install Apache
+       yum:
+         name : httpd
+	 state :present
+
+      -name : Start apache
+        service:
+	  name: httpd
+	  state: started
+	  enabled :yes
+
+
+   -name : Install apache and Start service
+    hosts :all
+    become: yes
+    tasks:
+      -name: Install apache
+        yum: 
+	  name : httpd
+	  state : present
+	 
+       -name : Start service
+        service:
+	  name : httpd
+	  state:started
+	  enabled : yes
+
+
+
+ ##---------Terraform- EC@ Instance (t3.medium)-------------------
+
+   provider "aws" {
+     region = "us-east-9'
+     }
+
+     resource "aws_instance" "PathnexEC2"{
+        ami = "ami-y7yhjy76787"
+	instance_type = "t3.medium"
+
+	tags = {
+	 Name "Pathnex-T3"
+	 }
+
+
+    provider "aws" {
+      region "us-ease-98'
+      }
+
+      resource "aws_instance" "PathnexEC2"{
+        ami = "ami-789789"
+	instance_type = "t3.medium"
+
+         tags = { 
+	    Name : "Pathnex-T3"
+	    }
+	    }
+
+## ---------- Kubernets-Create a ReplicaSet with 3 replica-----------------------
+
+   apiVersion: apps/v1
+   kind :ReplicaSet
+   metadata: 
+        name: pathnex-replicaset
+   spec:
+      replicas : 3
+      selector :
+       metaLabels :
+         app : pathnex-app
+      template :
+       metadata :
+         labels :
+	   app : pathnex-app
+       spec: 
+         containers:
+	   - name : app
+	    image : nginx
+	    ports:
+	      -containerPort : 80
+
+
+
+  apiVersion : apps/v1
+  kind : ReplicaSet
+  metadata :
+    name : pathnex-replicaset
+  spec:
+   replicas :3
+   selector :
+    metaLabels:
+     app : pathnex-app
+    template:
+      metadata:
+       labels:
+         app: pathnex-app
+      spec:
+        containers:
+	 - name : app
+	  image ; nginx
+	  ports:
+	   - containerPorts : 80
+
+
+
+   apiVersion : apps/v1
+     kind : ReplicaSet
+     metadata:
+       - name : pathnex-replicaset
+       spec :
+       replicas :3 
+         selector : 
+	 metalabels :
+	   app : pathnex-app
+	 template: 
+	   metadata:
+	     labels:
+	       app: pathnex-app
+         spec: 
+	   conatiners:
+	     - name : app
+	     iamge : nginx
+	     ports : 
+	     - containerPort : 80
+
+
+   apiVersion : apps/v1
+   kind :ReplicaSet
+   metadata :
+     - name : pathnex-replicaset
+    spec :
+      replicas : 3
+      selector :
+      metaLabels:
+        app : pathnex-app
+     templete:
+       metadata:
+         Labels:
+	   app: pathnex-app
+    spec: 
+      containers:
+        - name: app
+	  image :nginx
+	  ports :
+	    -containerPort : 80
+
+
+
+   ##----------------Shell Script-user info -----------
+
+   #!/bin/bash
+   echo "current user : $(whoiam)"
+   echo "current user groups : $(groups)"
+
+
+   #!/bin/bash
+   echo "current  user : $(whoami)"
+   echo "Current user Groups : $(groups)"
+
+
+
+   ##------------Docker---------------
+   FROM nginx:latest
+   COPY index.html /usr/share/nginx/html/index.html
+
+   <h1>Hello</h1>
+
+   /usr/share/nginx/html/index.html
+
+   docker build -t pathnex-nginx .
+   docker run -d -p 80:80 pathnex-nginx 
+
+
+
+
+   FROM nginx:latest
+   COPY index.html /usr/share/nginx/html/index.html
+
+   <h1> Hello</h1>
+
+   /usr/share/nginx/html
+
+   docker build -t pathnex-nginx .
+   docker run -d -p 80:80 pathnex-nginx
+
+
+
+
+   FROM nginx:latest
+   COPY index.html /usr/share/nginx/html/index.html
+   <h1> Hello </h1>
+   /usr/share/nginx/html
+   docker build -t pathnex-nginx .
+   docker run -d -p 80:80 pathnex-nginx
+
+   FROM nginx:latest 
+   COPY index.html /usr/share/nginx/html /index.html
+
+   <h1> Hello </h1>
+   #path
+    /usr/share/nginx/html
+    #bash
+    docker build -t pathnex-nginx .
+    docket run -d -p 80:80 pathnex-nginx
+
+

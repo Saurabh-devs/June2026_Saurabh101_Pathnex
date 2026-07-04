@@ -1,0 +1,8 @@
+1. 2 Hour Code Practise
+1. Learn and practise linux command bout how to make new user , hoe to set new permission to the new user 
+
+
+#-----------Tomorrow Task ---------
+1. Practise Linus command 
+2. one hour English Practise
+3. Explore mimimum 4 AWS Serv
