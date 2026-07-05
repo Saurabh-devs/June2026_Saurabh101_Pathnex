@@ -1,0 +1,579 @@
+
+##-------------------Day04-(Practicse- L1) --------------------
+##----------------Ansible - Install Multiplae packages ----------------
+
+  --- 
+    - name  : Install package for Pathnex
+      hosts : all
+      become : yes
+
+      tasks :
+        - name : Install tools 
+	  yum :
+	    name :
+	      - git 
+	      - wget
+	      state :present
+
+
+  --- 
+     - name : Install package for Pathnex 
+      hosts : all
+      become : yes
+        
+	tasks :
+	 - anme : Install tools
+	  yum :
+	   name :
+	     -  git 
+	     - wget
+	     state : present
+
+
+
+  ---
+    - name : Install Pachage on pathnex
+    hosts :all
+    become :yes
+     
+     tasks :
+       - name : Install package 
+         yum : 
+	  name :
+	   - git 
+	   - wget
+	   state : present
+
+
+
+  ---
+    - name  : Install package for pathnex 
+     hosts : all
+     become : yes
+
+     tasks : 
+      - name : Install tools
+        yum :
+	  name :
+	    - git 
+	    - wget
+	  state : present
+
+
+  ---
+    - name : Install package For Pathnex
+      hosts : all
+      become : yes
+
+      tasks : 
+      - name : Install tools
+        yum:
+	 name:
+	   - git 
+	   - wget
+	   state: present
+
+
+ ##------------------------Terraform - EC2 with key Pair (c6i.8xlarge)---------------------------------
+
+ provider "aws" {
+   region = "india-90"
+   }
+
+   resource "aws_key_pair" "PathnexKey" {
+       key_name = " PathnexKey"
+       public_key = "ssh-rsa- AAA...."
+       }
+
+       resource "aws_instance" "PathnexEC2"{
+         ami = " nbjh78979 "
+	 instance_type = "c6i.8xlarge"
+	 key_name = aws_key_pair.PathnexKey.key_name
+
+	 tags = { 
+	 Name = "PathnexEC2"
+	 }
+
+
+
+  provider "aws" {
+     regio = "us-90"
+     }
+
+   resource "aws_key_pair" "Pathnex_Key" {
+      key_name = " PathnexKey"
+      public_Key = "ssh-rsa AAAA..."
+      }
+
+   resource "aws_instance_type" "PathnexEC2" {
+      ami = "ami-89789yujkyu"
+      instance_type = "c6i.8xlarge"
+      key_name = aws_key_pair.PathnexKey.key_name
+
+      tags = { 
+        Name = "Pathnex-EC2"
+	}
+
+
+
+
+	provider "aws" {
+	 region = "china-yuyui"
+	 }
+
+
+      resource "aws_key_pair" "PathnexKey" {
+         key_name = "PathnexKey"
+	 public_key = "ssh-rsa AAAA...."
+	 }
+
+	 resource "aws_instance" "PathnexEC2" {
+	   ami = " ami-u8y8y"
+           instance_type = "c6i.xlarge"
+	   key_name = aws_key_pair.PathnexKey.key_name
+
+	   tags = {
+	     Name = "Pathnex-EC2"
+	     }
+
+	     }
+
+
+
+     provider "aws" {
+        region = "north-india"
+	}
+
+     resource "aws_key_type" "DevidKey" {
+         key_name = " DevidKey"
+	 public_key = "ssh-rsa hhjkh"
+	 }
+
+     resource "aws_instance" "DevidEC2" {
+         ami = "ami-8980hjkj"
+	 instance_type = "c6i.8xlarge"
+	 key_name = aws_key_pair.DevidKey.key_name
+
+	 tags = {
+	  Name = "DevidEC2"
+	  }
+
+
+
+     provider "aws" {
+       region = " india-iuiu"
+       }
+
+       resource "aws_key_pair" "PathnexKey" {
+           key_name = "PathnexKey"
+	   public_key = "ssh-rsa AA.jkjij"
+	   }
+	resource "aws_instance_type" "PathnexEC2" {
+	   ami = "ami-ggjghj"
+	   instance_type = "c6i.xlarge"
+	   key_name = aws_key_pair.PathnexKey.key_name
+
+	   tags = { 
+	     Name ="PathnexEC2"
+	     }
+	     }
+
+
+
+
+
+   ##---------Kubernetes- Create clusterIP Service-----------------
+
+   apiVersion: v1 
+    kind : service
+    metadata :
+       name : pathnex-service
+     spec :
+       selector :
+         app :pathnex-app
+	ports :
+	  - port : 80
+	  targetPort: 80
+
+
+
+   apiVersion : v1 
+    kind : service
+    metadata:
+       name : pathynex-service
+     spec : 
+       selector :
+          app: pathnex-app
+       ports :
+         -port :80
+	  targetPort : 80
+
+
+   apiVersion : v1
+    kind : service
+    metadata :
+       name :pathnex-service
+    spec :
+      selector :
+        app : pathnex-app
+      ports :
+         -port : 80
+	 targetPort : 80
+
+
+
+    apiVersion : v1 
+    kind :service
+    metadata :
+      name : pathnex-service
+    spec :
+      selector :
+        app:pathex-app
+      ports :
+         -port : 80
+	 targetPort : 80
+
+
+
+     apiVersion : v1 
+     kind : service
+     metadata :
+      name : pathnex-service
+     spec :
+       selector:
+         app:pathnex-app
+       ports :
+          port : 80
+	  targetPort : 80
+
+
+
+#------------Parallel builds-------------
+##------------------ Jenkins Pipeline-Parallel Build & Test---------------------
+
+   pipeline {
+     agent any
+       stages {
+         stage("Parallel Tasks"  {
+	    parallel {
+	      stage('Build') {
+	         steps {
+		    sh 'mvn clean compile'
+		    }
+		    }
+	      stage('Test') {
+	        steps {
+		  sh 'mvn test'
+		  }}}}}}
+
+
+
+     pipeline {
+       agent any 
+         stages {
+	    stage("Parallel Tasks"){
+                 parallel {
+		    stage('Build') {
+		       steps{
+		          sh 'mvn clean compile'
+			  }
+			  }
+                     stage('Test') {
+		        steps {
+			   sbh 'mvn  test'
+			   }}}}}}}
+
+      pipeline {
+         agent any 
+	    stages {
+	        stage("Parallel Tasks) {
+		    Parallel {
+		        stage('Build') {
+			   steps {
+			      sn 'mvn clean compile'
+			      }
+			      }
+			 stage('Test'){
+			    steps {
+			       sh 'mvn test'
+			       }
+			       }}}}}
+
+
+	pipeline {
+	    agent any 
+	       stages {
+	          stage("Parallel Tasks'){
+		     Parallel {
+		         stage('Build') {
+			     steps {
+			        sh 'mvn clean compile'
+				}
+				}
+			  stage ('Test'){
+			     steps {
+			         sh 'mvn test'
+				 }
+				 }}}}}
+
+#-------------GitLab CI -Parallel Jobs-----------
+
+
+     stages:
+       - build-test
+
+       maven-build:
+        stage: build-test
+	image : maven:8.9.9-jdk-17
+	script:
+	  - git clone url
+	  - cd app.java
+	  - mvn clean compile
+	  parallel: 1
+
+        maven-test:
+	 stage: build-test
+	 image : maven:8.9.9-jdk-17
+	 script:
+	   - cd sample.java
+	   - mvn test
+	 parallel: 1
+
+
+
+    stages: 
+    - build-test
+     
+     maven-build:
+      stage: build
+      image: maven:8.9.0-jdk-17
+      script:
+       - git clone url
+       - cd sample-app
+       - mnv clean compile
+       parallel : 1
+
+       maven-test:
+       stage : build-test
+       image : maven:9.9.8-jdk-17
+       script:
+        - cd app-java
+	- mvn test
+	parallel : 1
+
+
+    
+
+    #-----------------------------Practise_L2--------------------
+ #------------------Jenkinsfile-Basic CI pipeline------------------
+
+ pipeline {
+  ageny any {
+    stages {
+       stage('Build'){
+           steps{
+             echo 'Building Projects'
+	     }
+	     }
+	     stage('Test'){
+	        steps{
+		   echo " Running Tests"
+		   sh 'mvn test'
+		   }
+		   }
+	      stage('Deploy'){
+	         steps{
+		   echo 'Deploying application'
+		   }}}}
+
+
+
+   pipeline {
+      agent any 
+        stages {
+	   stage('Build' ) {
+	      steps {
+	         echo 'Building project'
+		 }
+                 }
+	   stage('Test'){
+	      steps{
+	         echo 'Running tests'
+		  sh 'mvn tests'
+		  }
+		  }
+	   stage('Deploy') {
+	      steps {
+	        echo 'Deploying application'
+		}}}}
+
+
+
+
+#--------------gitlab CI/CD Basic pipeline-------------
+
+     stages :
+     - build 
+     - test
+     - deploy
+
+     build:
+       stage: build
+       script :
+        - echo " Building project'
+
+    test:
+      stage : test
+      script :
+        echo : 'testing application'
+
+    deploy :
+      stage : deploy
+      script : 
+        - echo "Running tests'
+
+
+
+
+#-----------Ansible - Install and Configuration Nginx
+
+ ---
+   - name : Install and configure Nginx
+     hosts :all
+     become : yes
+     tasks :
+        - name : Install Nginx
+	  yum:
+	    name : nginx
+	    state : present
+	 -name: Configure nginx
+	  template :
+	     src : nginx.conf.j2
+	     dest: /etc/nginx/nginx.conf
+	 -name : Start nginx service
+	   service:
+	     name: nginx
+	     state : started
+	     enabled : yes
+
+
+  --- 
+     - name : Install and configure Nginx
+       hosts: all
+       become : yes
+        
+       tasks:
+         - name : Install nginx
+	    yum :
+	      name : nginx
+	      state : present
+	 - name : Configure nginx
+	  template :
+	      src : nginx.conf.j2
+	      dest : /etc/nginx/nginx.conf
+         - name : Start nginx service
+	   service :
+	     name : nginx
+	     state: started
+	     enabled : yes
+                   
+
+
+
+
+
+#----------------Terraform -EC2 with security-----------------
+   
+   resource "aws_security_group" "example" {
+       name = "example_security_group"
+       description = "allow SSH and HTTP"
+
+       ingress {
+         from_port = 22
+	 to_port = 22
+	 protocol = "tcp"
+	 cidr_blocks  = ["0.0.0.0/0"]
+	 }
+	 
+	 ingress {
+	   from_port = 22
+	   to_port = 22
+	   protocol = "tcp"
+	   cidr_blocks = ["0.0.0.0/0"]
+          }
+
+	  ingress {
+	    from_port =22
+	    to_port = 22
+	    protocol = "tcp"
+	    cidr_blocks =["0.0.0.0/0"]
+	    }
+	    }
+
+
+     resource "aws_security_group" "example" {
+        name = " example_securrity_group" {
+	description = "allow SSH and HTTP"
+
+	ingress {
+	  from_port = 22
+	  to_port = 22
+	  protocol = "tcp"
+	  cidr_blocks = ["0.0.0.0/0"]
+	  }}
+
+
+
+
+#------------Docker----------
+
+#apache Conatiner
+
+FROM ubuntu:22.04
+RUN apt update and && apt install apache2 -y
+RUN echo "Hello pathnex" > /var/www/html/index.html
+CMD ["apachectl" , "-D', "FOREGROUND"]
+
+#Bash Real Path
+/var/www/html
+
+
+FROM ubuntu:22.04
+RUN apt update && apt install apache2 -y
+RUN echo "Hello Ji " > /var/www/html/index.html
+CMD ["apachectl" , "-D", "FOREGROUND"]
+
+
+
+
+FROM ubuntu:22.04
+RUN apr update && apt install  apache2 -y
+RUN echo "HI......" > /var/www/html/index.html
+CMD ["apachectl", "-D" "FOREGROUND"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
