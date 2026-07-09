@@ -1,0 +1,15 @@
+#---------------Day-08--------
+
+ 1. L1 and L2 Coding practise done
+ 2. Intro Video Uploded
+ 3. Learn new aws services
+
+
+ #------------Tomorrow Tasks---------------
+  
+  1. revise linus command
+  2. revise previous aws services
+
+
+
+

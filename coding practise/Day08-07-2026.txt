@@ -1,0 +1,440 @@
+#-----------Day-08 Parcticse _L2-----------------
+
+#---------------Docker------------------
+
+#------------AnsibleInstall docker Compose----------------
+
+   - name  : Install Docker compose
+     hosts : all
+     become : yes
+       tasks :
+            - name : Install Dependencies
+	       yum : 
+	         name : "python3-pip"
+		 state: present
+
+             - name : Install docker-compose
+	        pip : 
+		   name : docker-compose
+
+
+
+   - name : Install Docker compose
+     hosts : all
+     become : yes
+       tasks : 
+         - name : Install dependencies
+	   yum :
+	      name : 'python3-pip"
+	      state : present
+
+          - name : Install docker-compose
+	     pip :
+	        name : docker-compose
+
+   
+  #---------------Terraform---------------
+
+  resource "aws_security_group" "allow_ssh_http" {
+       name  = "allow_ssh_http"
+       description = "Allow SSH and HTTP sccess"
+
+       ingress {
+         from_port = 22
+	 to_from =22
+	 protocol = "tcp"
+	 cidr_blocks = ["0.0.0.0/0"]
+	 }
+
+	 ingress {
+	     from_port = 80
+	     to_port = 80
+	     protocolo = "tcp"
+	     cidr_blocks = ["0.0.0.0/0"]
+	     }
+	     }
+
+   resource "aws_instance" "pathnex-ec2" {
+      ami = "ami-809809huuy"
+      instance_type = "t3.medium"
+      security_groups = [aws_security_group.allow_ssh_http.name]
+
+      ebs_block_device {
+         device_name = "/dev/sdh"
+	 volume_size = 30
+	 }}
+
+
+	 #------------Kubernets-------------------
+
+  apiVersion = v1
+  kind : Service
+  metadata : 
+    name : pathnex-service
+   spec :
+     type : NodePort
+     selector :
+        app : pathnex-app
+      ports :
+        - protocol : TCP
+	  port : 80
+	  nodePort : 30007
+
+
+   apiVersion : v1
+    kind : Service
+    metadata : 
+      name : pathnex-service
+    spec:
+      type:NodePort
+      selector:
+        app : pathnex-app
+      ports:
+        - protocol : TCP
+	  port : 80
+	  nodePort : 30007
+
+
+ #-----------Jenkins-------------
+
+ pipeline  {
+    agent any 
+      stages {
+        stage ('Build Docker Image') {
+	  steps {
+	    script {
+	       docker.build('pathnex-app)
+	       }}}
+
+	  stage('Push docker Image') {
+	     steps{
+	       script {
+	          docker.withRegistry('https:/docker.io', 'docker-credentials') {
+		     docker.image('pathnex-app').push('latest')
+		     }}}}}}
+
+
+
+  pipeline {
+     agent any 
+        stages {
+	   stage ('Build Docker Image') {
+	     steps {
+	       script {
+	          docker.build('pathnex-app)
+		  }}}
+
+	    stage('Push docker Image') {
+	      steps {
+	         script {
+		    docker.withRegistory('https:/docker.io', 'docker-credentials') {
+		         docker.image('pathnex-app').push('latest')
+			}}}}}}
+
+
+
+  #----------Gitlab CI/CD-------------------
+  stages :
+     - build 
+     - push 
+      
+   build :
+     stage : build
+     script :
+       - docker build -t pathnex-app .
+
+   push :
+      stage : push
+      script :
+        -docker login -u "$CI_REGISTRY_USER"  -p "$CI_REGISTRY_PASSWORD"
+	-docker push pathnex-app
+
+	#---------docker 
+	#Alpine Linux
+	FROM alpine:latest
+	WORKDIR /opt/pathnex/alpine-app
+	CMD ["echo", "Hllo Pathnex"]
+
+
+
+
+
+  #-------------Day-08-Practise_L2-------------------------
+
+  #-------Ansible -Install Package Using Variables------------
+
+  ---
+    - name : Install package for Pathnex using variables
+      hosts : all
+      become : yes
+
+      vars :
+        pathnex_packages:
+	  - tree
+	  - unzip
+	  - vim
+
+	 tasks :
+	  - name : Install rquired package
+	    yum :
+	      name : "{{pathnex_pacj=kages}}"
+	      state : present
+
+        
+
+  --  
+  - name : Install Packages  for pathnexusing variables
+    hosts : all
+    become : yes
+
+    vars :
+      pathnex_packages:
+        - tree
+	- unzip
+	- via
+
+      tasks :
+        - name : Install required packages
+	  yum :
+	    name : "{{pathnex_packages}}"
+	    state:present
+
+
+
+
+# --------terraform -------Create VPC  _Subnet---------
+
+   provider "aws" {
+     region = "us-east-1"
+      }
+
+    resource "aws_vpc" "PathnexVPC" {
+      cidr_block = "10.0.0.0/16"
+
+      tags = {
+         Name = "Pathnex-VPC"
+	 }
+        }
+ 
+    resource "aws_subnet" "PathnexSebnet" {
+       vpc_id = aws_vpc aws_vpc.PathnexVPC.id
+       cidr_block  = "10.10.1.o/24"
+       map_public_ip_on_launch = true
+
+       tags = {
+         Name = "Pathnex-subnet"
+	 }
+	 }
+
+   provider "aws" {
+      region = "us-east-1"
+      }
+
+   resource "aws_vpc" "PathnexVPC" {
+     cidr_vlock = "10.0.0.0/16"
+     
+      tags = {
+        Name = "Pathnex-VPC"
+	}
+	}
+
+
+    resource "aws_subnet" "PathnexSubnet" {
+       vpc_id = aws_vpc.PathnexVPC.id
+       cidr_block = "10.0.1.0/24"
+       map_public_ip_onlaunch = true
+
+       tags = {
+          Name = "Pathnex-Subnet"
+	  }
+}
+
+	 
+
+	 #------------Kubernets = Add Liveness & Readness Probes---------
+
+  apiVersion : v1
+  kind :pod
+  metadat :
+     name : pathnex-probe-pod
+  spec :
+     containers:
+        - name : web
+	  image : nginx
+	  livenessProbe:
+	        httpGet:
+		    path: /
+		    port :80
+		  initialDelaySeconds : 5
+		  readnessProbe :
+		    httpGet:
+		      path: /
+		      port : 80
+		    initialDelaySeconds : 3
+
+		    readnessProbe:
+		      httpGet:
+		      path:/
+		      port : 80
+		      initialDelaySeconds: 5
+		    readnessProbe :
+		      httpGet:
+		        path:/
+			port : 80
+		      initialDelaySeconds : 3
+
+
+		      readnessProbe:
+		        httpGet:
+			  path:/
+			   port:80
+			   intialDelaySeconds :5
+
+
+       apiVersion : v1
+        kind:pod
+	metadat :
+	   name : pathnex-probe-pod
+	spec :
+	  containers :
+	    - name : web
+	      image : nginx
+	      livenessProbe :
+	        httpGet :
+		  path : /
+		  port : 80
+		  initialDelaySeconds : 5
+		readnessProbe :
+		  httpGet:
+		   path : /
+		   port :
+		   intialDelaySeconds :3
+
+
+
+   #------------Shell Scripting-------------- Loop Througn List
+
+   #!/bin/bash
+
+   for item in Pathnex DevOps Training; do
+     echo "Item: $item"
+   done
+
+
+   for item in Pathnex DevOps Training; do
+     echo "Item : $item"
+   done
+
+  ##---------Jekins Pipeline -  Conditional Execution--------
+
+  pipeline {
+   agent any 
+      parameters {
+        string(name:'ENVIRONMENT', defaultValue: 'dev' , description: 'Deployment Environment')
+	}
+
+	environment {
+	   INSTITUTE_NAME = "Pathnex"
+	   }
+
+	   stages {
+	     stage ('Checkout') {
+	       steps {
+	         git branch : 'main', url: ''
+		 }}
+             stage('Build') {
+	       when {
+	         branch 'main'
+		 }
+		 steps {
+		  sh 'mvn clean compile'
+		  }
+		  }
+		  stage('Deploy') {
+		    when {
+		       expression { params.ENVIRONMENT =='dev'}
+		       }
+		       steps {
+		        sh 'echo "Deploying to $ENVIRONMENT by $INSTITUTE_NAME"'
+			}}}}
+
+    pipeline { 
+       agent any 
+         parametes {
+	   string (name : 'ENVIRONMENT', defaultValue:'dev', description: 'Deployment Environment')
+	   }
+	   environment { 
+	     INSTITUATE_NAME = "Pathnex"
+	     }
+	     stages {
+	        stage('Checkout') {
+		  steps {
+		    git branch: 'main', url: ''
+		    }}
+		stage('Build') {
+		  when {
+		    branch 'main'
+		    }
+		  steps {
+		    sh 'mvn clean compile'
+		    }}
+		 stage('Deploy') {
+		   when {
+		      expression { params.ENVIRONMENT =='dev'}
+		      }
+		      steps {
+		        sh 'echo "Deployment to $ENVIRONMENT by $INSTITUTE_NAME"'
+			}
+			}}}
+
+
+
+  ##----------GITLAB CI= Conditional jobs--
+
+  stages :
+    - build 
+    - deploy
+
+    build :
+      stage : build 
+      image : maven:3.8.1-jdk-17
+      script :
+        - git clone 
+	- cd java-app
+	- mvn clean compile
+      only:
+        - main
+
+     deploy:
+       stage : deploy
+       image : apine:latest
+       script :
+       - echo "Deployment to $CI_ENVIRONMENT_NAME by Pathnex"
+       only :
+       variable :
+         - $CI_ENVIRONMENT_NAME == "dev"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
