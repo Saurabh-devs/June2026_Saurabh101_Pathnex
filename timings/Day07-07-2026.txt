@@ -1,0 +1,16 @@
+#---------------Day-07--------------
+
+  1. Coding practise done
+  2. Aws secvice(EC@, IAM, VPC, s3) Done
+
+
+
+  #-------------tomorrow Task------------
+
+  1. Revice linux command and interview questions
+  2. Revice git and interview questions-
+  3. revice Aws services
+
+
+
+
