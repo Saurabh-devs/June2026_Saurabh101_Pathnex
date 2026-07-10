@@ -1,0 +1,11 @@
+#------------------ Day-09-------
+
+  1. Coding practise L1 and L2 code complted
+  2. Aws completed
+  3. intro video done
+
+
+
+  #-----------Tomorrow tasks-------------
+  1. Learning docker 
+  2. Revise AWS

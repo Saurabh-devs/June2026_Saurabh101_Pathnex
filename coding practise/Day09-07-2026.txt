@@ -1,0 +1,389 @@
+
+   #-------------Day09 -  Practise_L2---------------
+   #-----------------Ansible - Setup Docker container for nginx--------------
+
+   - name : setup Docker container for nginx
+     hosts : all
+      become : yes
+      tasks :
+        - name : Pull Nginx image
+	  docker_image :
+	    name : nginx
+	    source : pull
+	 - name : Run Nginx container
+	    docker_container :
+	       name : nginx-container
+	       image : nginx
+	       state : started
+	       published_ports :
+	          - "8080:80"
+
+
+
+    - name : Setup docker container for nginx
+      hosts : all
+      become : yes
+      tasks :
+       - name : Pull Nginx image 
+         docker_image :
+	     name : nginx
+	     source :pull
+
+       - name : run Nginx container
+         docker_container :
+	   name : nginx-container
+	   image : nginx
+	   state: started
+	   published_ports : 
+	     - "8080:80"
+
+
+    - name : setup docker container for nginx
+      hosts :all
+      become : yes
+      tasks :
+         - name : Pull Nginx image
+	   docker_image : 
+	      name : nginx
+	      source : pull
+	   - name : Run Nginx container
+	     docker_container :
+	       name : nginx-container
+	       image : nginx
+	       state : started
+	       published_ports :
+	         - "8080:80"
+
+
+  #--------------Terraform-EC2 with auto scaling----------
+
+  resource "aws_launch_configuration" "example" {
+    name = "example-config"
+    image_id = "ami-789789huyiu"
+    instance_type = "t3.medium"
+    }
+
+    resource "aws_autoscaling_group" "example" {
+       desired_capacity = 2
+       max_size =3
+        min_size = 1
+	vpc_zone_identifier  = ["subnet-1456456"]
+	launch_configuration = aws_launch_configuration.example.id
+	}
+
+
+
+  resource "aws_launch_configuration" "example" {
+     name = "example-config"
+     image_id = "ami-8989890"
+     instance_type = "t3.medium"
+     }
+
+     resource "aws_autoscaling_group" "example" {
+        desired_capacity = 2
+	max-sixe = 3
+	min_size =2
+	vpc_zone_identifier = ["subnet-7878789"]
+	launch_configuration = aws_launch_configuration.example.id
+	}
+
+
+
+
+  #-------------Kubernets-----Horizontal Pod AutoScaler(HPA)-----------------------	
+
+  apiVersion : apps/v1
+  kind : Deployment
+  metadata : 
+    name : pathnex-deployment
+  spec :
+    replicas :1
+    selector :
+      matchLabels :
+       app : pathnex-app
+    template:
+       metadata :
+         labels :
+	   app : pathnex-app
+	 spec :
+	   containers :
+	     - name : nginx
+	     image : nginmx
+	     ports :
+	       - containerPort : 80
+
+
+    apiVersion : apps/v1
+    kind :pod
+    metadata :
+      - name : pathnex-Deployment
+    spec:
+      replicas :1
+      selecor :
+        matchLabels :
+	 app : pathnex-app
+      template :
+        metadata:
+	  labels :
+	    app : pathnex-app
+	  spec:
+	   containers :
+	     - name : nginx
+	       image : nginx
+	       ports :
+	         - containerPort : 80
+
+
+
+   apiVersion : autoscaling/v2
+   kind : HorizontalPodAutoScaler
+   metadata :
+      name : pathnex-hpa
+   spec :
+      scaleTargetRef:
+        apiVersion:apps/v1
+	kind :Deploymewnt
+	name :pathnex-deployment
+     minReplicas : 1
+     maxReplicas : 10
+     targetCPUUtilizationPercentage : 50
+
+
+     apiVersion : autoscaling/v2
+     kind : HorizontoalPodAutoacaler
+     metadata :
+       name: pathnex-hpa
+     spec :
+        scaleTargetRef :
+	  apiVersion : v2
+	  kind : Deployment
+	  name : pathnex-deployment
+	minReplicas :1
+	MaxReplicas : 10
+	targetCPUUtilizationPercentage : 50
+
+
+	apiVersion : autoscaling/v2
+	kind : HorizontalPodAutoscaler
+	metadata :
+	   name : pathnex-hpa
+	spec:
+	   scaleTargetRef :
+	      apiVersion : apps/v1
+	      kind : Deployment
+	      name : pathnex-deployment
+	    minReplicas : 1
+	    maxReplicas : 10
+	    targerCPUUtilizationPercentage :  50
+
+
+
+	    #-----------Jenkins File--------------------Deploy to Kubernets-
+
+
+  pipeline { 
+    ageny any 
+       stages {
+         stage('Deploy to Kubernets') {
+	    steps  {
+	      script  {
+	         sh 'kubectl apply -f deployment.yaml'
+		 sh 'kubectl apply -f deployment.yaml'
+		 sh 'kubectl apply -f deployment.yaml'
+		 sh 'kubectl apply -f deplyment.yaml'
+          }}}}}
+
+
+
+	#--------------Gitlab CI/CD - Deploy to Kubernets--------
+
+	stages :
+	 - deploy
+
+	 deploy :
+	   stage : deploy
+	   script :
+	     - kubectl apply -f kubernets/deployment.yaml
+
+
+  
+  
+	  #-------------Docker   
+       
+       FROM ubuntu:22.04
+       ENV INSTITUTE = webpalace
+       ENV COURSE = Devops
+       CMD echo "$INSTITUTE - $COURSE"
+
+
+
+
+
+
+       #------------------Practise_L1----------------
+
+    #---------ansible--------
+    ---
+      - name : Deploy template to pathnex
+        hosts : all
+	become : yes
+
+	tasks :
+	  - name : Copy template file
+	  template :
+	    src : pathnex.conf.j2
+	    dest : /etc/pathnex.confi
+
+
+
+   ---
+     - name : Deploy template to pathnex
+       hosts :all 
+       become : yes
+
+       tasks :
+         - name : copy template file
+	 template :
+	  src : pathnex.confi.j2
+	  dest : /etc/pathnex.conf
+
+
+
+
+
+
+   # ------------Terraform--------------Internet Gateway
+      
+      resoure "aws_internet_gateway" "PathnexIGW" {
+        vpc_id = aws_vpc.PathnexVPC.id
+
+	tags = {
+	  Name = "Pathnex-IGW"
+	  }
+	  }
+
+        resource "aws_internet_gateway" "PathnexIGW" {
+	   vpc_id = aws_vpc.PathnexVPC.id
+
+	   tags = {
+	     Name  = "Pathnex-IGW"
+
+	     }}
+
+
+#------------Kubernetas - Create ConfigureMap
+
+    apiVersion : v1
+    kind :ConfigMap
+    metadata : 
+      name : pathnex-config
+    data :
+       APP_MODE : "production"
+       WELCOME_MSG : "Helllo Pathnex"
+
+
+
+      apiVersion : v1
+      kind :ConfigMap
+      metadata :
+         name : pathnex-config
+      data : 
+        APP_MODE : "production"
+	WELCOME_MSG: " hjkhkj"
+
+
+
+#------------------Shell script----check CPU load----------------
+
+     #!/bin/bash
+     
+     LOAD = $(uptime | awk '{print $10}' )
+
+     LOAD = $(uptime | awk '{print $10}')
+
+     LOAD = $(uptime | awk '{print $10}')
+
+     LOAD = $(uptime | awk '{print $10}')
+
+     echo "Current cpu load : $LOAD"
+     
+
+
+
+     #--------------Jenkins Pipelinw-  Archieve and Artifacts--------
+
+     pipeline {
+       agent any 
+          environment {
+	     INSTITUTE_NAME = "pathnex"
+	     }
+
+	     stages {
+	        stage('Checkout' ) {
+		  steps  {
+		    git url  : 'url'
+		    }}
+
+		 stage ('Build') {
+		  steps {
+		    sh 'mvn clean package'
+		    }}
+		    stage('Archieve') {
+		      steps {
+		         archieveArtifacts artifacts : 'target/*.jar', fingerprint : true
+			 archieveArtifacts artifacts : 'tagret/*.jar', fingerprint : true
+			 }}
+			 }}
+
+   #--------------Gitlab-------
+
+
+   stages :
+     - build 
+
+
+     build :
+       stage : build 
+       image : maven :3.8.1-jdk-17
+       script :
+          - git clone "url"
+	  - cd sample-spp-java
+          - mvn clean package 
+       artifacts :
+          paths :
+	    - targert/*.jar
+	expire_in : 1 week 
+
+
+     	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
