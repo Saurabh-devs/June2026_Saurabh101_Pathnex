@@ -1,0 +1,13 @@
+#------------Day-10----------
+   1. Practise _l1 and L2 code practise done
+   2. docker Practise done
+
+
+#---------tomorrow Task---------
+
+  1. revise linux commands
+  2. revise aws
+  3. revise Docker
+
+
+  
