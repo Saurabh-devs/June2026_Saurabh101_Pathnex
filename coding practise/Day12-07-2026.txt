@@ -1,0 +1,417 @@
+##---------Day-12---Practise_L2------------
+#--------Ansible setup Ayuto Scaling--------
+  
+  -name: Setup Auto Scaling Group
+   hosts:all
+   become: yes
+   tasks :
+       -name:  Create Launch Configuration
+        ec2_asg:
+	    name : pathnex-asg
+	    region  : us-ease-1
+	    launch_config_name : pathnex-launch-config
+	    mix_size : 1
+	    max_size : 3
+	    desired_capacity : 2
+	    vpc_zone_identifier:  subnet-12345678
+
+
+   - name: Setup Auto Scaling Group
+     hosts : all
+     become : yes
+     tasks : 
+       - name : Create Launch Configuration 
+         ec2_asg:
+	     name : pathnex-asg
+	     region : us-east-1
+	     launch_config_name : pathnex-launch-config
+	     min_size : 1
+	     max_size : 3
+	     desired_capacity : 2
+	     vpc_zone_identifier : subnet-12345678
+
+
+     #--------Terraform : Create a load balancer with EC2 Instance----------
+
+
+     resource "aws_lb" "pathnex-lb"  {
+         name = "pathnex-lb"
+	 internal = false
+	 load_balancer_type = "app;ication"
+	 security_groups = [aws_security_group.allow_ssh_http.id]
+	 subnets = [aws_subnet.public.id]
+	 }
+
+      resource "aws_instance" "pathnex_ec2" {
+        ami = "ami-8908hkuh"
+	instance_type = "t2.micro"
+	security_groups = [aws_security_group.allow_ssh_http.name]
+	tags = {
+	  Name = "Pathnex-EC2"
+	  }
+
+
+     resource "aws_lb" "Pathnex_lb" {
+         name : "pathnex_lb"
+	 internal : false
+	 load_balancer_type = "application"
+	 security_groups = [aws_security_group.allow_ssh_http.name]
+	 subnets = [aws_subnet.public.id]
+	 }
+
+	 resource "aws_lb" "pathnex_lb" {
+	     name = "pathnex-_lb"
+	     internal = false 
+	     load_balancer_type = "application"
+	     security_groups = [aws_security_geroup.allow_ssh_http.name]
+	     subnetss = [aws_subnet.public.id]
+	    }
+          
+	    resource "aws_lb" "pathnex_lb" {
+	       name = "Pathnex_lb"
+	       internal = false 
+	       load_balance_type = "application"
+	       security_groups  = [aws_security_group.allow_ssh_http.id]
+	       subnets = [aws_subnet.public.id]
+	       }
+
+
+
+    #-------Kubernets - HPA with load balancer-----------
+
+      apiVersion : apps/v1
+      kind :Deployment
+      metadata :
+        name : pathnex-web-app
+      spec :
+        replicas : 2
+	selector :
+	   matchLabels : 
+	     app : pathnex-web-app
+	template :
+	   metadata:
+	     labels:
+	        app: pathenx-web-app
+	   spec :
+	     containers :
+	        -name :web
+		 image : nginx
+		 ports :  
+		    - containerPort : 80
+   ---
+      apiVersion : autoscaling/v2
+      kind : HorizontralPodAutoscaler
+      metadata : 
+        name :  pathnex-web-app-hpa
+      spec:
+          scaleTargetRef :
+	    apiVersion : apps/v1
+	    kind : Deploymnet
+	    name :pathnex-web-app
+	  minReplicas : 1
+	  maxReplicas :5
+	  targetCPUUtiliationPercentage : 80
+
+
+   ---
+     apiVersion : autoscaling/v2
+     kind : HorizontalPodAutoScaler
+     metadata : 
+       name : pathnex-web-app-hpa
+     spec :
+       scaleTargetRef :
+         apiVersion : apps/v1
+	 kind : Deployment
+	 name : pathne-web-app
+      minReplicas : 1
+      maxReplicas :5
+      targetCPUUtilizationPercentage : 80
+
+
+  ---
+     apiVersion : autoscaling/v2
+     kind : HorizontalPodAutoscaler
+     metadata :
+       name : pathnex-web-app
+     spec :
+       scaleTargetRef :
+         apiVersion : apps/v1
+	 kind : Deployment
+	 name : patynex-web-app
+      minReplicas : 1
+      maxReplicas ":5
+      targetCPUUtilization : 80
+
+
+     
+
+     #--------Jenkins- Impliment parallel stages-------
+   pipeline {
+     agent any 
+        stages {
+	   stage('Build & Test') {
+	     parallel {
+	       stage('Build') {
+	         steps {
+		   echo 'Buildiong project'
+		   }}
+            stage('Test') {
+	      steps {
+	        echo 'Running tests.....'
+		}}}}
+	    stage('Deploy') {
+	      steps {
+	        echo 'Deploying...'
+		}}}}
+
+
+  #-------Gitlab CI/CD ---- Parallel Jobs for build & test
+
+
+    stages :
+     - build
+     - test
+     - deploy
+
+     build :
+       stage : build
+       script :
+         - docker build -t pathnex-web-app
+	 - docker build -t pathnex-web-app
+	 -docker build -t pathnex-web-app
+
+      test :
+        stage : test
+	script :
+	  - docker run pathnex-web-app npm test
+	  - docker run app npm test
+
+       deploy :
+        stage : deploy
+	  script :
+	    - kubectl apply -f kubernets/deploymene.yaml
+	    - kubectl apply -f kubernetes/deployment.yaml
+
+	#---------docker---------
+	FROM ubuntu
+	VOLUME ["/opt/pathnex/data"]
+	CMD ["sleep", "1000"]
+
+	#patgh
+	/opt/pathnex/data
+   
+        #base command
+	docker volume create pathnex-volume
+	docker volume create pathnex-volume
+	docker volume create pathnex-volume
+
+      
+
+   #--------Practise _L2-----------
+
+   #--Ansible Ensure  file with content---------
+
+   ---
+     - name : Create config file for Pathnex
+       hosts :all
+       become :yes
+
+       tasks :
+          - name : Write content to file
+	    copy :
+	      dest : /etc/pathnex.conf
+	      content : |
+	        Welcome to Pathnex devops
+		Saurabh this is your 12 day
+
+        tasks :
+	  - name :write content to file 
+	    copy :
+	      dest  : /etc/pathnex.conf
+	      content : |
+	        Helii hkjhkjhkjhkjhhc jk
+
+       tasks :
+          - name : write content to file
+	    copy :
+	      dest  : /etc/pathnex.conf
+	      content : |
+	        Hello nkjklh
+
+  #--------Terraform -RDs skeleton-------------
+
+   resource "aws_db_instance"  "PathnexRDS" {
+       allocated_storage   = 20
+       engine = "mysql"
+       instance_class = "db.t3.micro"
+       name : "PathnexDB"
+       username : "admin"
+       password : "password123"
+       skip_final_snapshot   = true
+       }
+
+    resource "aws_db_instance" "pathnexRDS"  {
+     allocated_storage = 20
+     engine : "mysql"
+     intance_class = "db.t3.micro"
+     name :
+     username :
+     passworrd :
+     skip_pfinal_snapshot :
+     }
+
+
+     resource "aws_db_instance" "pathnexRDS"   {
+        allocated_engine = 20
+	engine = "mysql"
+	instnace_class = "db.te.micro"
+	name:
+	 username:
+	 password:
+	 skip_fina_snapshot :true
+	 }
+
+  #----------Kubernetes---------Rolling Update stragery--------
+  apiVersion : apps/v1
+  kind :Deployment
+  metadata :  
+    name : pathnex-rolling
+    spec:  
+      replicas : 3
+      strategy :
+        type :  RollingUpdata
+	rollingupdate :
+	  maxSurge : 1
+	  maxUnavailables : 1
+	selector :
+	  matchLabels :
+	    app :roll
+	 template :
+	    matadata:
+	       labels :
+	         app : roll
+            spec :
+	      containers :
+	        - name : web
+		 image :nginx
+
+
+  apiVersion : apps/v1
+  kind : Deployment
+  metadata :
+     name :  pathnex-rolling
+  spec :
+    replicas : 3
+    strategy :
+       type :RollingUpdate
+       rollingUpdate:
+          maxSurge : 1
+	  maxUnavailable: 1
+    selectors:
+       matchlabels :
+          app :roll
+    template :
+      metadata :
+        labels :
+	  app :roll
+     spec: 
+        containers :
+	   - name : web 
+             image : nginx
+
+ #-------shell Scripting---Backup Directory----------
+
+ #!/bin/bash
+
+ SOURCE = "/var/log/"
+ DEST ="/backup/pathnex-$(date  +%F).tar.gz"
+
+ tar -czf $DEST $SOURCE
+ echo "Backup created at : $DEST"
+
+ #!/bin/bash
+
+ SOURCE = "/var/log"
+ DEST = "/backup/pathnex-$(date  +%F).tag.gz"
+
+ tar -czf $DEST $SOURCE
+ echo "Backup created at : $DEST"
+
+
+
+
+ #-------Jenkins---------Multi Branch--------
+
+    pipeline {   
+       agent any 
+          environment {
+	      INSTITUTE_NAME = "Pathnex"
+	      }
+	   stages {
+	     stage('Checkout') {
+	       steps {
+	         checkout scm 
+		 }}
+	     stage('Build'){
+	       steps {
+	         sh 'mvn clean complie'
+		 }}}}
+
+  #-----------Gitlab CI -Branch Specific jobs---------
+
+     stages :
+       - build 
+     build-main :
+       stage :build
+       image :  maven : 3.8.1-jdk-17
+       script:
+         - mvn clean compile
+       only :
+         - main
+
+     build-dev:
+        stage : build
+	image: maven:3.8.1-jdk-17
+	script: 
+	  - mvn clean compile
+	 only : - dev
+
+	    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
