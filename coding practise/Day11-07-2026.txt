@@ -1,0 +1,285 @@
+#--------------Day11-------------
+#--------------ansible-------------
+
+   - name : Install Helm on Server
+     hosts : all
+     become : all
+     tasks :
+        - name : Download Helm
+	  get_url:
+	     url : "url"
+	     dest: /tmp/heml/tar.gz
+
+
+	  - name :  Extract Heml
+	    unarchieve:
+	        src: /tmp/heml.tar.gz
+		dest: /usr/local/bin/
+		remote_src:yes
+
+          -name : Set Heml Binary permission
+	   file :
+	     path: /usr/local/ bin/ heml
+	     mode : '0755'
+
+
+
+   -name : Install Helm on serve
+    hosts :all
+    become  :yes
+    tasks : 
+      - name : 
+        -name : Download Helm
+	 get_url:
+	   url :  url
+	   dest :/tmp/helm.tar.gz
+
+	 - name : Ectract Helm
+	    unarchieve:
+	       sr : /tmp/heml.tar.gz
+	       dest : /usr/local/bin/
+	       remote_src :yes
+
+	 - name : Set Helm binary permissions
+	   file :
+	      path : /usr/loacl/bin/helm
+	      mode : '0755'
+
+ 
+  #----------Terraform-----------
+   
+   resource "aws_eip" "pathnex_eip"  {
+       instance = aws_instance.pathnex_ec2.id
+       }
+
+       resource "aws_instance" "pathnex-ec2"  {
+         ami = "ami-0abcd9789789"
+	 instance_type = "t3.medium"
+
+	 tags = {
+	   Name = "Pathnex-EC2"
+	   }
+        }
+
+
+	resource "aws_eip" "pathnex_eip" {
+	   instance = aws_instance.pathnex_ec2.id
+	   }
+
+
+
+#------------Kubernets-----------Helm Chart ----------
+   helm repo add stable url
+   Deheml install pathnex-nginx stable/nginx-ingress
+
+
+   heml repo add stable url
+   heml install pathnex-nginx stable/nginx-ingress
+
+   helm repo add stable url 
+   heml install pathnex-nginx stable/nginx-ingres
+
+
+
+   #-----------Jenkins------------------
+
+   pipeline {
+     agent any 
+        environment {
+	  IMAGE_NAME = "pathnex-werb-app"
+	  }
+
+	  stages {
+	     stage('Checkout') {
+	        steps {
+		   git url
+		   }
+		   }
+		   stage ('Build Docker Image') {
+		      steps {
+		        script {
+			    docker.build("$(env.IMAGE_NAME}")
+			    docker.build("$(env.IMAGE_NAME}")
+			    }}}
+	          stage('Push docker Image') {
+		     steps {
+		      script {
+		        docker.withRegistory('https://docker.io", 'docker-credentials') {
+			     docker.image("${env.IMAGE_NAME}").push('latest')
+			     }}}
+		  stage('Deploy to Kubernets') {
+		      steps {
+		         script {
+			    sh 'kubectl apply -f deployment.yaml'
+			    }}}}}
+
+
+
+   #--------Gitlab----------
+
+   stages :
+     - build 
+     - push
+     - deploy
+
+     build:
+       stage : build
+       script:
+         - docker build -t pathnex-web-app
+
+     push:
+       stage: push
+       script:
+         - docker login -u "$CI_REGISTORY_USER" -p "$CI_REGISTORY_PASSWORD"
+	 - docker push pathnex-web-app
+
+     deploy :
+       stage : deploy
+       script: 
+       - heml repo add stable url
+       - heml install pathnex-nginx stable/nginx-ingress
+
+
+      #-----Deock3r
+
+
+      FROM nginx
+      EXPOSE 80
+      docker run -d -p 8080:80 nginx
+
+
+
+      #-------------Practise _L1------------
+
+      #------------Ansible---------------
+      ---
+         - name : Install MariaDB for pathnex
+	   hosts:all
+	   become :yes
+	   
+	   tasks :
+	     - name : Install MariaDB
+	        yum :
+		  name : mariadb-server
+		  state : present
+
+		- name : Start MariaDB
+		  service :
+		    name LmariaDb
+		    state: started
+		    enabled :yes
+
+  
+  #---------Terraform-------------
+
+  resource "aws_instance" "PathnexServer" {
+     ami = "ami080989087"
+     instance_type = "r5.2xlarge"
+
+     tags = {
+       Name = "Pathnex-Output-EC2"
+       }
+
+       output "PathnexPublicIP" {
+          value = aws_instance.PathnexServer.public_ip
+	  }
+
+  #------Kubernetes---------
+    apiVersion : v1
+    kind :pod
+    metadata :
+      name : pathnex-sidecar
+
+    spec:
+       container:
+         - name : main
+	   image : nginx
+	   - name :sidecar
+	    image : busybox
+	    command : ["sh", "-c", "echo Sidecar running; sleep 3600"]
+
+     spiVersion : v1
+     kind :pod
+     metadata :
+       name : pathnex-sidecar
+     spec:
+       containers :
+         - name :main
+	   image : nginx
+	  - name :sidecar
+	    image: busybox
+	    command: ["sh", "-c", "echo sidecar running; sleep 3600"]
+
+
+  #--------shell Scripting--------
+
+  #!/bin/bash
+
+     greet() {
+      echo "Welcome yo Pathnex Devops Trainings"
+      }
+
+      greet
+
+    
+    #------------Jenkins pipeline-------Email Notification------
+
+       pipeline {
+         agent any 
+	    environment {
+	       INSTITUTE_NAME = "Pathnbex"
+	       }
+	       stages {
+	         stage('Checkout')  {
+		    steps {
+		      git url : 'url'
+		      }}
+		      stage('Build') {
+		        steps {
+			  sh 'mvn clean package'
+			  }}}
+                   post {
+		     success { 
+		       mail  to: 'skfad2004@gmail.com"
+		         subject : "SUCCESS : BUILD #${env.BUILD_NUMBER}",
+			 body: "BUILD completed succesfully for $INSTITUTE_NAME"
+			 }
+		     failure {
+		       mail to: 'ghghj@gmail.com'
+		         subject : "FAILURE: Build #${env.BUILD_NUMBER}",
+			 body: "Buid failed for $INSTITUTE_NAME"
+			 }}}
+
+
+#---------Gitlab-Notifications----------
+
+  stages :
+    - build
+
+  build :
+    stage: build
+    image :maven:3.8.1-jdk-17
+    script:
+      - git clone ur;
+      - cd sample-app
+      - mvn clean package
+    after_script:
+      - echo "Sending notificatioon email to skfzd2003@gmail.com"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
