@@ -1,0 +1,9 @@
+#------Day13----------
+    1. Parctise_L1 and Practise_L2 tasks done-------
+    2. Kubernets installation done
+
+
+#--------Tomorrow--------
+   1. Revise prebious tasks-----
+
+
