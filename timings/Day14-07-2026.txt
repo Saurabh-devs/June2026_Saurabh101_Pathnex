@@ -1,0 +1,8 @@
+#----------Day-14-------------
+  1. Practise_L1  and Practise_l2 task done
+  2. Kubernets cluster createion(will do today)
+
+#---------Tomorrow--------------
+   1. complete revision of previos topics
+
+
