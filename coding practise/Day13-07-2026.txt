@@ -1,0 +1,271 @@
+#-------------Day-13---------Practise_L2--------------------
+ 
+ #---------Ansible-Multi-Mode Nginx setup--------------
+
+    -name : Setup Nginx on multiple nodes
+     hosts : all
+     become : yes
+     
+     tasks : 
+       - name : Install nginx
+         yum:
+	   name : Install nginx
+	   state : present
+
+	- name : start nginx service
+	  service : 
+	    name :nginx
+	    state : started
+	    enabled : yes
+
+
+ #--------- Terraform - Create IAM Users and Policies-------
+  
+   resource "aws_iam_user" "example_users" {
+       name = "pathnex_user"
+       }
+
+    resource "aws_iam_policy" "example_policy" {
+       name = "pathnex-policy"
+       description = "Policy for Pathnex application"
+       policy = jsonencode ( {
+          Version = "2012-10-17"
+	  statement = [
+	     {
+	        Action = "s3:Listbucket"
+		Effect = "Allow"
+		Resource = "arn:aws:s3:::pathnex-bucket"
+		},
+		]
+		})
+		}
+
+
+
+     resource "aws_iam_user" "example_users" {
+        name = "Pathnex_user"
+	}
+
+     resource "aws_iam_policy" "example_policy" {
+       name = "pathnex-policy"
+       description = "Policy for Pathnex application "
+       policy = jsonencode ({
+         Version  = "2012-10-17"
+	 Statement = [
+	   {
+	     Action = "s3:Listbucket"
+	     Effect = "Allow"
+	     Resource = "arn:aws:s3:::pathnex-bucket"
+	     },
+	     ]
+	     })
+	     }
+
+   
+     # ------------Kubernetes- Deploy Nginx with ConfigMap and Secrets--------------
+
+     apiVersion : v1
+     kind : ConfigMap
+     metadata:
+        name :
+	  nginx-secret
+	type: Opaque
+	data: 
+	  password: cG80989009
+      
+      ---
+        apiVersion : v1
+	kind : Secret
+	metadata:
+	  name : pathnex-nginx
+	spec :
+	  replicas : 2
+	  selector : 
+	    matchLabels : 
+	       app : pathnex-nginx
+
+          template:
+	    metadata : 
+	       labels : 
+	         app : pathnex-nginx
+            spec : 
+	      containers :
+	        - name : nginx
+		  image : nginx
+		  volumeMounts :
+		    - mountPath : /etc/nginx/nginx.conf
+		      name : nginx-config
+		      subPath : nginx.conf
+	      volumes :
+	        - name : nginx-config
+		  configMap : 
+		     name : nginx-config
+		 - name : nginx-secret
+		   configMap :
+		     name : nginx-config
+		     - name : nginx-secret
+		       secret :
+		           secretName : nginx-secret
+
+
+	#------Jenkinsfile- Multi-Branch  PiprLine with Docker Build---------
+    pipeline {
+       agent any 
+           stages {
+	      stage('Build') {
+	          steps {
+		    script {
+		        docker.build('pathnex-app')
+			}}}
+	      stage('Deploy') {
+	         steps {
+		   script {
+		     kubectl apply -f kubernetes/deployment.yaml
+		     }}}}}
+
+
+   #----------------Gitlab---
+
+   stages : 
+    - build 
+    - push
+    - deploy
+
+     
+
+     build:
+       stage : build
+       script:
+         - docker build -t pathnex-web-app
+
+      push :
+        stage : push
+	script :
+	  - docker login -u "$CI_REGISTORY_USER" -p "$CI_REGISTORY_PASSWORD"
+	  - docker push pathnex-web-app
+
+      deploy :
+         stage : deploy
+	 script : 
+	   - helm repo add pathnex
+	   - helm install pathnex-nginx pathnex/nginx-ingress
+
+  #---------Docker--------
+
+  FROM ubuntu
+  COPY pathnex-file.txt /opt/pathnex/files/
+  ADD pathnex.tar.gz /opt/pathnex/extracetd
+
+
+
+
+  #----------Practise_L1-------------
+
+  #------Ansibe-------
+  - name : "Broken"
+    hosts : all
+
+    tasks: 
+    - name " Install
+    yum :
+       name : nginx
+       state present
+
+  #----Terraform--------
+
+  resource "aws_instance" BadEC@  {
+     ami = ami-123
+     instance_type = "c5.large'
+     tags = {
+       Name : "Broken"
+       }}
+
+
+    #---- Kubernetes---------
+
+    apiVersion : apps/v1
+    kind :Deployment
+    metadata:
+       name broken
+    spec : 
+      replics :2
+      selector:
+         match:Labeles : 
+	 app  broken
+      template :
+         metadata: 
+	   labels :
+	     app broken
+	 spec : 
+	    containers :
+	      - name app 
+	      image nginx
+
+
+
+	 #----Jenkins pipe line----------
+
+   pipeline {
+     agent any 
+       environment {
+         INSTITUTE_NAME = "Pathnex"
+	 }
+	 matrix {
+	   axes {
+	      axis {
+	        name 'JAVA_VERSION'
+		values '8', '11', '17'
+		}}
+	  stages{
+	    stage {
+	       steps {
+	         sh 'echo'
+		 }}}}}}
+
+
+#--------Gitlab------
+
+  stages:
+    - build
+      
+      build :
+        stage : build 
+	image : maven:3.8.1-jdk-167
+	parallel :
+	   matrix:
+	     - JAVA_VERSION : ['8', '11', '17']
+	    script :
+	      - echo ""
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
