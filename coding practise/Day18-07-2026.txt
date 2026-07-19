@@ -1,0 +1,304 @@
+#----------------------Day-18-----------------------
+  #------------------Ansible----Configure HPProxy for Load Balancer----------------
+  
+  ```yaml
+     - name :Setup HAProxy Load Balancer
+       hosts :all
+       become :yes
+       tasks :
+          - name :Install HAProxy
+	    yum :
+	       name :naproxy
+	       state :present
+	   - name : Configure HAProxy
+	     template :
+	        src : haproxy.cfg.j2
+		dest : /etc/haproxy/haproxy.cgf
+	   - name : Start HAProxy sevice
+	     service :
+	        name : haproxy
+		state : started
+		enabled :yes
+
+   
+
+      ```yaml
+         - name : Setup HAProxy Load Balancer
+	   hosts : all
+	   become :yes
+	   tasks :
+	      - name : Install HAProxy
+	        yum :
+		   name :haproxy
+		   state :present
+
+               - name : Configure HAProxy
+	         template :
+		    src : haproxy.cgf.j2
+		    dest : /etc/haprocy/haproxy.cgf
+		- name : Start HAProxy service
+		  service : 
+		    name : haproxy
+		    state : started
+		    enabled : yes
+
+
+#--------------------Terraform------------------------------
+   
+   resource "aws_lb" "pathnex_lb" {
+      name = "pathnex-ld"
+      internal =  false
+      load_balancer_type = "applicatio"
+      security_groups = [aws_security_groups.allow_ssh_http.id]
+      subnets = [ aws_subnet_public.ic, aws_subnet_public2.id]
+      }
+
+      resource "aws_autoscalling_group" "pathnex_asg" {
+         desired_capacity = 3
+	 max_size = 5
+	 min_size = 2
+	 vpc_zone_identifier = [aws_subnet.public.id, aws_subnet.public2.id]
+	 launch_configuration = aws_launch_configuration.pathnex_configure.id
+	 }
+
+
+    #------------Kubernetes-------------------------------
+
+     apiVersion : apps/v1
+     kind :Deployment
+     metadata :
+       name : pathnex-webapp
+     spec :
+       replicas : 3
+       selector :
+         matchLabels :
+	   app : pathnex-web-app
+       template :
+          metadata :
+	    labels :
+	       app : pathnex-web-app
+	   spec :
+	     containers :
+	        - name : nginx
+		  image : nginx
+		   ports :
+		     - containerPort : 80
+     ---
+       apiVersion : autoscaling/2
+       kind :HorizontalPodAutoScaler
+       metadata :
+         name :  pathnex-web-app-hpa
+       spec :  
+          scaleTargetRef :
+	     apiVersion : apps/v1
+	     kind : Deployment
+	     name : pathnex-web-app
+	   minReplicas : 2
+	   maxReplicas : 10
+	   targetCPUUtilizationPercentage : 80
+
+
+
+#--------------------------------Jenkins-------------------
+
+   pipeline {
+      agent any 
+          stages {
+	     stage('Build') {
+	         steps {
+		    echo 'Building Docker image...'
+		    docker.build(/pathnex-web-app')
+		    }}
+		stage('Test') {
+		  steps {
+		    echo 'Running tests'
+		    }}
+		    stage('Blue-Green Deployment') {
+		       steps {
+		         script {
+			     sh 'kubectl apply -f kubernetes/blue-green-deployment.yaml'
+			     sh 'kubectl apply -f kubernetes/green-deployment.yaml
+			     sh 'kubectl rollout status deployment/blue-deployment'
+			     sh 'kubectl rollout status deployment/green-deployment'
+			     }}}}}
+
+
+
+ #---------------------Gitlab -----------------
+
+     stages :
+     -  build
+     -  push
+     - deploy
+
+     build :
+        stage : build
+	script :
+	   -  docker build -t pathnex-web-app
+     push:
+       stage : push
+       script :
+         - docket login -u "$CI_USER_REGISTORY" -p "$CI_REGISTORY_USER"
+	 - docker push pathnex-web-app
+
+     deploy :
+        stage : deploy
+	script :
+	  - kubectl apply -f kubernetes/blue-deployment.yaml
+	  - kubectl -f kubernetes/green-deployment.yaml
+	  - kubectl rollout status deployment/blue-deployment
+	  - kubectl rollout status deployment/green-deployment
+
+
+	 docker run -d --name pathnex-redis redis
+
+	 /data
+
+
+
+  #-------------------------Practise_L1--------------------
+
+  #-----------Ansible -------------------
+
+   ---
+      - name :show system facts for Pathnex
+        hosts : all
+
+	tasks :
+	  - name : print os info
+	    debug:
+	      var : ansible_facts['os_family']
+	   
+	   - name : Print IP address
+	     debug :
+	       var : anscible_facts['deg=fault_ipv4']['address']
+
+
+   #-----------Terraform-------------------
+
+   variabel "instance_type' {
+      default = 'c6a.12xlarge'
+      }
+
+
+      resource "aws_instance" "PathnexServer" {
+        ami = "7897"
+	instance_type = var.instance_type
+	}
+
+
+	output "pathnex_ip" {
+	  value = aws_instance.Pathnex.public_ip
+
+	  }
+
+
+  #------------Kubernetes------------
+
+  apiVersion : v1
+  kind :pod
+  metadata:
+    name : pathnex-affinity
+  spec :
+    affinity :
+      nodeAffinity:
+        requiredDuringSchedulingIgnporedDurationExecution:
+	   nodeSelectorTerms:
+	     - matchExpressions:
+	       -key :disktype
+	        operator :In
+		values :
+		  -ssd
+      containers:
+        - name : web
+	  image : nginx
+
+
+  #---------------Shelll Scripting------------
+
+  #!/bin/bash
+
+  tar -czf /backup/pathnex-logs-$(date +%F).tar.gz  /var/log/
+  echo "Logs archieved"
+
+
+
+  #____________JEnkins----------
+
+
+  pipeline {
+     agent any 
+        environ,ment {
+	   INSTITUTE_NAME = "Pathnex"
+	   }
+
+	 stages {
+	    stage ('Deploy') {
+	      steps {
+	        script {
+		  try {
+		     sh 'echo "Deploying $INSTITUTE_NAME application..."
+		     sh 'exit 1'
+		     }
+		     catch (Expection e) {
+		         echo "Deployment faile"
+			 }}}}
+
+   #Gitlab---------------
+
+   stages:
+     - deploy
+
+     variables : INSTITUTE_NAME :"Pathnex"
+
+     deploy :
+       stage : deploy
+       image : alpine:latest
+       script :
+         - echo "Deploying $INSTITUTE_NAME application..."
+	   - exir 1
+	   after_script: 
+	   - echo "eployment failed"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
