@@ -1,0 +1,282 @@
+ #----------------Day-21------------------
+
+ #---------------Ansible------------------------------------------------
+
+     ```yaml
+
+        - name :Backup and Restore Files
+	  hosts: all
+	  become :yes
+
+	  tasks : 
+	    - name : Create backup of /etc directory
+	       command : tar -czvf /tmp/etc-backup.tar.gz /etc
+	    - name : Copy backup to remote server
+	      copy :
+	         src : /tmp/etc-backup.tar.gz 
+		 dest : /tmp/etc-backup.tag.gz
+	    - name : Restore backup to remote server
+	      command : tar -xzvf /tmp/etc-backup.tar.gz  -C /
+
+
+	  - name : Backup  nad Restore Files
+	    hosts :all
+	    become : yes
+
+	    tasks :
+	      - name : Create backup of /etc directort 
+	        command : tar -czvf /tmp/etc-backup.tar.gz  /etc
+	      - name : Copy backup to remote server
+	        copy :
+		   src  : /tmp/ect-backup.tar.gz
+		   dest :  /tmp/etc-backup.tar.gz
+	      - name  : Restore backup from remote server
+	        command : tar -xzvf /tmp/etc-backup.tar.gz -C /
+
+  #------------Terraform---------------
+
+     resource "aws_s3_bucket" "pathnex_bucket" {
+        bucket = "Pathnex-backup-bucket"
+	region = "us-east-1"
+	
+	versioning = {
+	  enabled = true
+	  }}
+
+      resource " aws_s3_bucket" "pathnex_buckup_bucket_eu" {
+         bucket = "pathnex-backup-bucket-eu"
+	 region = "eu-west-1"
+
+	 versioning {
+	  enabled = true
+	  }}
+
+	  resource "aws_s3_bucket_object" "pathnex_backup_files" {
+	     bucket aws_s3_bucket.pathnex_bucket.bucket
+	     key = 'buckup.tar.gz'
+	     source = "pathnex-backup.tag.gz"
+	     }
+
+  #------------Kubernetes --------------------
+
+    apiVersion : apps/v1
+    kind : StatefulSet
+    metadata :
+      name : pathnex-statefulSet
+    spec :
+       serviceName : 'pathnex'
+       replicas : 3
+        selector :
+	  matchLabels :
+	    app : poathenex
+	template :
+	  metadata :
+	     labels :
+	       app : pathnex
+	   spec :
+	     containers :
+	       - name : nginx
+	       image : nginx
+	         vplumeMounts :
+		     - mountPath: /usr/share/nginx/html
+		       name :web-content
+             volumeClaimTermplates :
+	        - metadata :
+		  name :web-content
+		    spec :
+		      accessModes : ["ReadWriteOnce"]
+		      resources :
+		        requests:
+			  storage : 5Gi
+
+  #---------------Jenkins-------------
+
+     pipeline {
+        agent any 
+	  stages {
+	    stage('Backup') {
+	       steps {
+	          echo 'backup'
+		  sh 'tar -cvzf /tmp/jenkins-backup.tar.gz   ${WORKSPACE}'
+                   }}
+	    stage('Restore' {
+	       steps {
+	         echo ' Restoring---'
+		    sh 'tar -xzvf /tmp/jenkins-backup.tar.gz  -C ${WORKSPACE}'
+		    }}}}
+
+
+  #------------GitLab------------
+    
+    stages :
+      - backup 
+      - restore
+
+      backup :
+         stage :  backup
+	 script :
+	   - tar -czvf /tmp/backup.tar.gz kubernetes/deployment.yaml
+
+       restore:
+          stage : restore
+	  script:
+	    - tar -xzvf /tmp/backup.tar.gz -C kubernetes/
+
+   #-----------Docker---------------
+
+   version : '3'
+   services:
+      web :
+        image : nginx
+	xontainer_name : pathnex-nginx
+	ports :
+	  - "80:80"
+
+
+
+	  #---------------Practise_L1-----------------
+
+
+#----------Ansible-------------
+
+   ---
+      - name : Install and start Nginx
+        hosts : all
+	become : true
+
+	tasks :
+	   - name : Install nginx
+	     yum:
+	       name : nginx
+	       state : present
+	    - name : Strt and enable nginx
+	      serbvice :
+	         name : nginx
+		 state : started 
+		 enabled : yes
+
+
+#----------Terraform-----------
+
+   resource :aws_instance" "web" {
+       ami = "ami-8980"
+        instance_type ="c6i.8xLarge"
+
+	tags = {
+	  Name  = "Pathnex"
+	  }}
+
+#-----------Kuberneets----------
+
+  apiVersion : apps /v1
+  kind : Deployment
+  metadata :
+    name : nginx-deployment
+
+  spec :
+    replicas : 3
+
+    selector :
+      mathLabels :
+         app: nginx
+
+   template:
+     metadata:'
+       labels:
+          app : nginx
+   spec : 
+     containers :
+       - name : nginx
+        image : nginx
+
+#-----------Shell script------------
+
+    #!/bin/bash
+    date
+    uptime
+    df -h
+
+
+#----------Jenkins-------------
+    pipeline {
+       ageny any 
+          environment {   
+	      INSTITUTE_NAME = 'Pathnex"
+	      }
+
+	     stages {
+	        stage ('Deploy to  Dev') {
+		   steps {
+		      sh 'ech "Deploying $INSTITUTE_NAME to Dev environment"
+		      }}
+
+		 stage('Deploy to staging') {
+		    setps {
+		      input message : "Approve Staging Deployment'
+		      sh 'echo "Deploying $INSTITUTE_NAME to Satging Environmet "
+		      }}
+		   stage('Deploy to prod') {
+		     steps {
+		        input message : "Approve Prod Deployment" 
+			  sh 'echo "Deploying $INSTITUTE_NAME to prod environment"
+
+			  }}}}}
+
+ #-------------Gitlab-------------
+
+   stages: 
+    - deploy 
+
+    variables:
+      INSTITUTE_NAME : "Pathnex"
+
+    deploy-dev :
+      stage : deploy
+       iamge: alpine:latest
+       script : 
+          - echo "Deploymening $INSTITUTE_NAME to dev environment'
+
+     deploy-staging:
+        stage : deploy
+	image : alpine :latest
+	sxcript :
+	  - echo " Deploying $INSTITUTE_NAME to Satging environmet"
+        when : manual
+
+     deploy-prod :
+       stage :deploy
+       image : alpine:latest
+       script :
+         - ecjho "Deploying $INSTITUTE_NAME to prod environmet
+	 when : manual
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
