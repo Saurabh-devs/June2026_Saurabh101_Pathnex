@@ -1,0 +1,7 @@
+#---------------Day18---------------
+   
+   1. Code practise done
+
+
+   #------------Tomorrow Task---------------
+   1. Revise Kubernetes
