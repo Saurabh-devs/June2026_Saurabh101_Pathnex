@@ -1,0 +1,9 @@
+#-------------------Day-19============
+
+   1. Today task completed
+
+
+#-------------Tomorrow-------------
+   
+   1. Revise Agra Cd and kubernetes
+

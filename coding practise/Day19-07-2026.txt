@@ -1,0 +1,160 @@
+#-------------------Day-19---------------------
+
+   #-------------------Ansible --------------------------
+
+   - name  :  Install Prometheus for Monitoring 
+   host : all
+   become :  yes
+
+   task:
+      - name : Install Prometheus dependencies
+        yum :
+	  name :  
+	     - prometheus
+	     - pro,etheus-node-exproter
+	  state : present
+
+      - name : Start Prometheus service
+        service :
+	   name : Prometheus
+	   state : started
+	   enabled : yes
+
+
+#-----------Terraform---------
+
+      resource "aws_cloudwatch_log_stream" "pathnex_log_stream" {
+           log_group_name = aws_cloudwatch_log_group.pathnex_log_group.name
+	    name = "pathnex-log-stream"
+	    }
+
+
+	    resource "aws_cloudwatch_log_stream" "pathnex_log_stream" { 
+	       log_group_name = aws_cloudwatch_log_group.pathnex_log_group.name
+	       name = "pathnex-log.stream"
+	       }
+
+
+	    #--------------Kubernets--------------------
+	    apiVersion : apps/v1
+	    kind :Deployment
+	    metadata :
+	        name :  fluentd
+	    spec : 
+	       replicas : 1
+	       selector  :
+	         matchLabels :
+		     app : fluentd
+		     templete :
+		        matchdata :  
+			  labels :
+			    app : fluented
+			 spec :
+			   containers:
+			     - name : dluentd 
+			        image : fluent/fluentd
+			        ports :
+				  - containerPort : 2422
+
+
+           ---
+	      apiVersion : v1
+	      kind : Service
+	      metadata :
+	        name : fluentd
+              spec :
+	        selector :
+		  app : fluentd
+		ports :
+		  - protocol  : TCP
+		    port : 24224
+		   
+#--------------Jenmkins-------------
+   
+     pipeline {
+        agent any 
+	   stages {
+	     stage('Build') {
+	       steps {
+	          echo 'Building docker image'
+		  docker .build('pathnex-web-app')
+		  }}
+
+	stage('Test') "{
+	  steps {
+	    echo 'Running trst'
+	    }}
+	 stage('Monitor Deployment') {
+	   steps {
+	      script {
+	         sh 'kubectl apply -f kubernetes/deployment.yaml'
+		 sh 'kubectl get pods --watch'
+		 }}}}}
+
+
+#---------Gitlab-------------
+
+ stages:
+   - build 
+   - push
+   - deploy
+
+   build :
+     stage : build
+     script :
+       - deploy build -t app
+
+   push :
+     stage : push
+     script :
+       - docker login -u "$CI_REGISTRY _NAME" -p "$CI_REGISTRY_PASSWORD"
+       - docker push app
+
+    deploy:
+      stage : deploy
+      script :
+         - kubrctl apply -f kubernetes/deployment.yaml
+	 - kubectl gets posd --watch
+
+
+#---------Docker-------------
+
+from  falsk import flask
+app =Flask(__name__)
+@app.route('/')
+def home():
+   return "hello"
+ app.run(host='0.0.0.0', port =5000)
+
+ FROM python:3.11
+ WORKDIR /opt/pathnex/flask-app
+ CPoy . /opt/pathnex/flask-app
+ RUN pip install flask
+ CMD ["Python", "/opt/pathnex/flask-app/app.py"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
