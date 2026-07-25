@@ -1,0 +1,91 @@
+#-------------Day-23-----------------
+
+#-------Ansivle-------------
+  
+   - name : Deploy AWS Lambda Function
+     hosts : locakhost
+     tasks :
+       - name : create Lamn=bda function
+         command : aws lambda create-function --function-name pathnex-lambda --runtime python3.8 --role arn:aws::iam::565756:role/lambda-execution-role --handler lambda_function.lambda_handler  --zip-file  fileb://lambda.zip
+
+    #-----------Terraform------------
+ 
+   resource "aws_api_gateway" "pathnex_api" {
+      name = "pathnex-api"
+      description = "pathnex API"
+
+      }
+
+      resource "aws_lambda_function" "pathnex_
+      lambda" {
+         function_name = "pathnex-lambda"
+	 runtime = "python3.8"
+	 role = aws_iamrole.lambda_exec_role.arn
+	 handler = "lambda_function.lambda_handler"
+	 filename = "lambda.zip"
+
+	 }
+
+      resource "aws_api_gateway_integration" "lambda_integration" {
+         rest_api_id = aws_ii_gateway_rest_api.pathnex_api.id
+	 resource_id = aws_api_gateway_resource.pathnex_resource.id
+	 http_method = aws_api_gateway_method.pathnex_m3ethod.http_method
+	 integration_http_method = "POST"
+	 type = "AWS_PROXY"
+	 uri = aws_lambda_function.pathnex_lambda.invoke_arn
+     }
+
+      #------------Kubernetes----------------------
+       helm install pathnex-microservice ./microservice-chart
+
+       #______Jenkins----------
+
+       pipeline{
+         agent any 
+	   stages {
+	      stage('Build') {
+	         steps {
+		    echo 'Building-------'
+		    ah 'zip -r lambda.zip lambda/'
+		    }
+		    }
+               stage('Deploy to aws ') {
+	         steps  {
+		   script {   
+		      ah 'aws lambda update-function-code --function-name pathnex-lambda --zip-file fileb://lambda.zip'
+		      }}}}}
+
+
+		    
+        #-------------Gitlab--------
+
+	 stages :
+	   - build 
+	   - deploy
+
+	   build :  
+	     stage :  build
+	     script :
+	        - aws lambda update-function-code --function-name pathnex-lambda --zip-file fileb://lambda.zip
+
+	#---------docker----------
+
+   FROM maven:3.9-eclipse-temurin-17 As builder
+   WORKDIR /opt/pathnex/java-build
+   COPY  . /opt/pathnex/java-build/
+   RUN mnv clean package
+
+
+   FROM tomcat:9
+   WORKDIR  /usr/local/tomcat/webapps
+   COPY --from=builder /opt/pathnex/java-build/target/*.war   /usr/local/tomcat/webapps/
+   EXPOSE 8080
+   CMD ["cataline.sh", "run"]
+
+
+
+
+
+
+
+
