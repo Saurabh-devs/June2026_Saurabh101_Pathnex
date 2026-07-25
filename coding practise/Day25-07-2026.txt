@@ -1,0 +1,130 @@
+#--------------------Day-25-----------------
+  #-------------Ansible--------------
+
+  ```yaml
+     - name : Setup Prometheus Node Exporter
+       hosts : all
+       become : yes 
+       tasks :
+          - name : Install Prometheus Node Exporter
+	    yum :
+	       name : promethus-node-exporte
+	       state : present
+
+	  - name  : Start Promethus Node Exporter service
+	    service : started
+	    enavbled : yes
+
+   #---------Terraform---------------
+
+   resource "aws_cloudwatsch_metrice_alarm" "pathnex_cpu_alarm" {
+       alarm_name =  'pathnex-cpu-utilization-high"
+       comparison_operator =  "GreaterThanthreshold"
+       evalution_periods = "1"
+       metrice_name = "CPUUtilization"
+       namespace = "AWS/EC2"
+       period = "60"
+       statiztic = "Average"
+       threashold  = "80"
+
+       dimensions = {
+          InstanceId = aws_instance.pathnex_ec2.id
+	  }
+	  alarm_actions = [aws_ans_topic.pathnex_alerts.arn]
+
+	  resource "aws_sns_topic" "pathnex_alerts" {
+	     name = "pathnex-alerts"
+	     }
+
+
+#----------Kubernets------------------
+     
+        apiVersion : apps/v1
+	kind :Deployment
+	metadata :
+	   name : prometheus
+	 spec :
+	   replics : 1
+	   selector : 
+	      matchLabales :
+	          app : prometheus
+		template :
+		   metadata :
+		      labels :
+		         app: promethueus
+                       spec : 
+		          containers :
+			     - name : prometheus
+			       image : prom/prometheus:latest
+			       ports :
+			         - containerPort : 9090
+      ---
+         apiVersion : apps /v1
+	 kind : Deployment
+	 n=metadata : 
+	    name :  grafana
+	 spec : 
+	   replicas : 1
+	   selector :
+	      matchLabels :
+	        app : grafana
+            template : 
+	       metadata: 
+	          labels :
+		    app :  grafana
+                 spec :
+		    container :
+		       - name  : grafana
+		          image : grafana / grafana:latest
+			  ports :
+			    - containerPort : 3000
+
+
+#--------Jenkins------------------
+
+  pipiline {
+      agent any 
+            stages {
+	          stage('Monitor') {
+		     steps {
+		       script {
+		           ech0 'Triggring Cloudwatch ---"
+			   sh 'aws sloudwatch put-metrics-data --namespace "Aws/EC2"  --metrics-name "CPUUtilization"  --value 90'
+			   }}}
+			   stage('Test') {
+			       steps {
+			           echo 'Running...'
+				   }}}
+     
+     #------------Gitlab------------
+
+
+     stages :
+       - monitor
+       - test
+
+       monitor :
+          stage : monitor
+	  script : 
+	   - aws cloudwatch put-metrice-data --namespace "AWS/EC2"  --metrics-name  "CPUUtilization" --value 90
+
+	  test:
+	    stage : test
+	    script :
+	        - echo "Runniong tests..."
+
+
+		#-------docker-------
+
+		node_modules 
+		.git
+		temp
+
+
+              
+
+
+
+
+
+
