@@ -1,0 +1,95 @@
+#-----------Day-26--------------
+  #----------Ansible------------
+
+  - name : Implement SSh Jey Authenttcation
+    hosts : all
+    become : yes
+    tasks :
+       - name : Generate SSh Key pair
+         command :  ssh-keygen -t rsa -b 2048 -f /home/user/.ssh/id_rsa -N ""
+       - name :  Add SSH public key to authoirized_keys
+         authorized_key :
+	    user : user
+	    state : present
+	    Key : ={{lookup('file', '/home/user/.ssh/id_rsa.pub')}}'
+
+
+#-----------Terraform -------------
+   resource "aws_vpc_flow_log" "pathnex-flow-log" {
+     log_group_name = "pathnex-flow-logs"
+     vpc_id = aws_vpc.pathnex_vpc.id
+     traffic_type = "ALL"
+     log_destination_type = "cloud-watch-logs"
+
+     resource "aws_cloudwatch_log_group" "pathnex_flow_logs_group" {
+        name = "pathnex-flow-logs"
+	}
+
+#--------------Kubernetes-----------------
+   
+     apiVersion : networking.k8s.io/v1
+     kind: NetworkPolicy
+     metadata : 
+         name :  pathnex-web-app
+      spec :  
+         podSelector:
+	     matchLabeles : 
+	          app : pathnex-web-app
+              policyTypes :
+	         - Ingress
+		 - Egress
+	      ingress :
+	         - from :
+		    - podSelector :
+		       matchLabels :
+		          app : pathnex-api
+		engress :
+		   - to :
+		      - podSelector :
+		           matchLabels :
+			      app : pathnex-database
+
+#--------Jenkins------------------
+
+    pipeline {
+       agent any 
+          environment {
+	     AWS_ACCESS_KEY_ID = credentials('aws-access-key')
+	     AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+	     }
+	     stages {
+	         stage('Build') {
+		    steps {
+		       echo 'Building docker image...'
+		       docker.build('pathnex-web-app')
+		       }}
+		   stage('Deploy') {
+		       steps {
+		          echo 'Deploying to AWS EC2..'
+			  sh 'aws ec2 run-instance --image-id ami-78978 --count 1 --instance-type t2.micro'
+			  }}}}
+
+
+#----------------GitLab---------------
+
+  stages :
+     - build 
+     - deply
+
+     build :
+       stage : build
+        script :
+	   - docker build -t pathnex-web-app
+
+
+     deploy :
+       atage : deploy 
+       script :
+         - echo "deploying..."
+
+	 #_----------------Docker------------
+
+docker logs pathnex-nginx
+docker inspect patgnex-nginx
+
+
