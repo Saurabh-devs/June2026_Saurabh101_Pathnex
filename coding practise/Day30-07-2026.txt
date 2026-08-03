@@ -1,0 +1,50 @@
+#---------------Day-30-------------
+  #---------------docker-Creation-------------
+ 
+ #-------Ec2 Creation--------------
+
+    provider "aws" {
+         region = "ap-south-1"
+	 }
+
+    resoirce "aws_instance" "pathnex" {
+       ami =" ami-8980"
+       instance_type = "m7i-flex.large"
+       count = 1
+       key_name = "Pathnex-ec2-key"
+       subnet_id = "subnet-88989890"
+       vpc_security_group_ids = ["sg-787897"]
+       tags = {
+          Name = "pathnex-ec2"
+	  }}
+
+    output   "ec2_public_ips" {
+        value = aws_instance.pathnex[*].public_ip
+	}
+
+
+
+    #---------Pathnex-app-v1----
+
+
+        const http = require('http');
+	
+	const server = http.createServer((req, res) => {
+	   res.end("Welcome to docker");
+	   });
+
+	   server.listen(3000);
+
+
+   #-------------docker file---------
+
+    FROM node:18
+
+    WORKDIR /pathnex-app
+
+    COPY pathnex-app-v1.js .
+
+    CMD ["node", "pathnex-app-v1.js"]
+
+
+
